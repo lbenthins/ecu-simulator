@@ -1,2 +1,2 @@
 # ECU Simulator
-ECU simulation (some OBD-II and UDS services)
+ECU simulation (some OBD-2 and UDS services)
