@@ -27,7 +27,7 @@ def get_pid_response(supported_pids, requested_pid):
 
 
 def get_supported_pids_response(supported_pids):
-    supported_pids_response = 0
+    supported_pids_response = 0x00000000
     for pid in supported_pids:
-        supported_pids_response = supported_pids_response | 1 << (int(pid.get("id")) - 1)
+        supported_pids_response = supported_pids_response | 0x80000000 >> (int(pid.get("id") - 1))
     return supported_pids_response.to_bytes(4, byteorder="big")
