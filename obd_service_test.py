@@ -1,5 +1,5 @@
 import isotp
-from my_obd import services
+from obd import services
 
 CAN_INTERFACE = "can0"
 POSITIVE_ANSWER = 0x40
