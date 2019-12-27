@@ -8,8 +8,8 @@ def get_fuel_level():
 
 SERVICES = [
     {0x01: "Show current data", "pids": [
-        {"id": 0x2F, "description": "Fuel tank level input", "response": get_fuel_level()},
-        {"id": 0x0D, "description": "Vehicle speed", "response": get_vehicle_speed()}
+        {"id": 0x0D, "description": "Vehicle speed", "response": get_vehicle_speed()},
+        {"id": 0x2F, "description": "Fuel tank level input", "response": get_fuel_level()}
     ]}
 ]
 
@@ -22,12 +22,11 @@ def get_service_pids(service_id):
 
 
 def get_supported_pids_response(pids):
-    supported_pids_response = 0x00000000
+    supported_pids_response = 0x00000001
     for pid in pids:
         pid_int = int(pid.get("id"))
         if pid_int < 32:
             supported_pids_response = supported_pids_response | 0x80000000 >> (pid_int - 1)
-            print(supported_pids_response)
     return supported_pids_response.to_bytes(4, byteorder="big")
 
 
