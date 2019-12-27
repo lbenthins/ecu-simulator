@@ -1,7 +1,7 @@
 import isotp
-from my_obd import service
+from my_obd import services
 
-CAN_INTERFACE = "can0"
+CAN_INTERFACE = "vcan0"
 POSITIVE_ANSWER = 0x40
 
 RX_ID = 0x7DF
@@ -14,11 +14,11 @@ can_socket2.bind(CAN_INTERFACE, isotp.Address(rxid=0x7E0, txid=TX_ID))
 
 
 def process_request(req):
-    pids = service.get_service_pids(req[0])
-    if pids is not None:
-        pid_response = service.get_pid_response(pids, req[1])
-        if pid_response is not None:
-            return bytes([POSITIVE_ANSWER + req[0]]) + bytes([req[1]]) + pid_response
+    requested_service = req[0]
+    requested_pid = req[1]
+    service_response = services.process_service_request(requested_service, requested_pid)
+    if service_response is not None:
+        return bytes([POSITIVE_ANSWER + requested_service]) + bytes([requested_pid]) + service_response
     return None
 
 
