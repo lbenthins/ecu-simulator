@@ -1,7 +1,7 @@
 import isotp
 from my_obd import services
 
-CAN_INTERFACE = "vcan0"
+CAN_INTERFACE = "can0"
 POSITIVE_ANSWER = 0x40
 
 RX_ID = 0x7DF
@@ -25,9 +25,10 @@ def process_request(req):
 while True:
     request = can_socket.recv()
     if request is not None:
-        print("Request: " + request.hex())
-        response = process_request(request)
-        if response is not None:
-            print("Response: " + response.hex())
-            can_socket2.send(response)
+        if len(request) > 1:
+            print("Request: " + request.hex())
+            response = process_request(request)
+            if response is not None:
+                print("Response: " + response.hex())
+                can_socket2.send(response)
 
