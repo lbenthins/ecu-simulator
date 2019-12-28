@@ -32,6 +32,11 @@ class TestServices(unittest.TestCase):
         self.assertIsNotNone(response)
         self.assertEqual("00000000", response.hex())
 
+    def test_process_service_0x09_pid_0x00(self):
+        response = services.process_service_request(requested_service=0x09, requested_pid=0x00)
+        self.assertIsNotNone(response)
+        self.assertEqual("40000001", response.hex())
+
     def test_process_unknown_service_returns_none(self):
         response = services.process_service_request(requested_service=UNKNOWN_SERVICE, requested_pid=0x00)
         self.assertIsNone(response)

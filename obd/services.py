@@ -23,6 +23,10 @@ def get_fuel_type():
     return 0x01.to_bytes(1, BIG_ENDIAN)
 
 
+def get_vin():
+    return "TESTVIN0123456789".encode()
+
+
 SERVICES = [
     {"id": 0x01, "description": "Show current data",
      "pids": [
@@ -30,6 +34,10 @@ SERVICES = [
          {"id": 0x0D, "description": "Vehicle speed", "response": get_vehicle_speed()},
          {"id": 0x2F, "description": "Fuel tank level input", "response": get_fuel_level()},
          {"id": 0x51, "description": "Fuel type", "response": get_fuel_type()}
+     ]},
+    {"id": 0x09, "description": "Request vehicle information",
+     "pids": [
+         {"id": 0x02, "description": "Vehicle Identification Number(VIN)", "response": get_vin()}
      ]}
 ]
 
