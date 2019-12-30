@@ -53,30 +53,39 @@ SERVICES = [
 
 
 def process_service_request(requested_service, requested_pid):
-    if isinstance(requested_service, int) and isinstance(requested_pid, int):
-        pids = get_service_pids(requested_service)
-        if pids is not None:
+    if is_service_request_valid(requested_service, requested_pid):
+        service_response, service_pids = get_service(requested_service)
+        if service_pids is not None and requested_pid is not None:
             if is_supported_pids_request(requested_pid):
-                return get_supported_pids_response(pids, requested_pid)
-            for pid in pids:
-                if pid.get("id") == requested_pid:
-                    return pid.get("response")
-    elif isinstance(requested_service, int) and requested_pid is None:
-        return get_service_response(requested_service)
+                return get_supported_pids_response(service_pids, requested_pid)
+            return get_pid_response(requested_pid, service_pids)
+        return service_response
     return None
 
 
-def get_service_pids(requested_service):
+def is_service_request_valid(requested_service, requested_pid):
+    return (isinstance(requested_service, int) and isinstance(requested_pid, int)) \
+            or (isinstance(requested_service, int) and requested_pid is None)
+
+
+def get_service(requested_service):
     for service in SERVICES:
         if service.get("id") == requested_service:
-            return service.get("pids")
-    return None
+            return service.get("response"), service.get("pids")
+    return None, None
 
 
 def get_service_response(requested_service):
     for service in SERVICES:
         if service.get("id") == requested_service:
             return service.get("response")
+    return None
+
+
+def get_pid_response(requested_pid, pids):
+    for pid in pids:
+        if pid.get("id") == requested_pid:
+            return pid.get("response")
     return None
 
 
