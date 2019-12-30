@@ -24,7 +24,11 @@ def get_fuel_type():
 
 
 def get_vin():
-    return "TESTVIN0123456789".encode()
+    return bytes([0x00]) + "TESTVIN0123456789".encode()
+
+
+def get_ecu_name():
+    return bytes([0x00]) + "TEST_ECU".encode()
 
 
 SERVICES = [
@@ -37,7 +41,8 @@ SERVICES = [
      ]},
     {"id": 0x09, "description": "Request vehicle information",
      "pids": [
-         {"id": 0x02, "description": "Vehicle Identification Number(VIN)", "response": get_vin()}
+         {"id": 0x02, "description": "Vehicle Identification Number(VIN)", "response": get_vin()},
+         {"id": 0x0A, "description": "ECU name", "response": get_ecu_name()}
      ]}
 ]
 
