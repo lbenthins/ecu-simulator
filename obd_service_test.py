@@ -20,6 +20,8 @@ def process_request(req):
         requested_pid = req[1]
     service_response = services.process_service_request(requested_service, requested_pid)
     if service_response is not None:
+        if requested_pid is None:
+            return bytes([POSITIVE_ANSWER + requested_service]) + service_response
         return bytes([POSITIVE_ANSWER + requested_service]) + bytes([requested_pid]) + service_response
     return None
 
