@@ -32,7 +32,7 @@ def get_ecu_name():
 
 
 def get_dtcs():
-    return 0x0477.to_bytes(2, BIG_ENDIAN)
+    return 0x0504770001000200030004.to_bytes(11, BIG_ENDIAN)
 
 
 SERVICES = [
