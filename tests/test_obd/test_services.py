@@ -37,6 +37,10 @@ class TestServices(unittest.TestCase):
         self.assertIsNotNone(response)
         self.assertEqual("40400001", response.hex())
 
+    def test_process_service_0x03_returns_DTCs(self):
+        response = services.process_service_request(requested_service=0x03, requested_pid=None)
+        self.assertIsNotNone(response)
+
     def test_process_unknown_service_returns_none(self):
         response = services.process_service_request(requested_service=UNKNOWN_SERVICE, requested_pid=0x00)
         self.assertIsNone(response)

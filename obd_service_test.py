@@ -15,7 +15,9 @@ can_socket2.bind(CAN_INTERFACE, isotp.Address(rxid=0x7E0, txid=TX_ID))
 
 def process_request(req):
     requested_service = req[0]
-    requested_pid = req[1]
+    requested_pid = None
+    if len(req) == 2:
+        requested_pid = req[1]
     service_response = services.process_service_request(requested_service, requested_pid)
     if service_response is not None:
         return bytes([POSITIVE_ANSWER + requested_service]) + bytes([requested_pid]) + service_response
@@ -25,7 +27,7 @@ def process_request(req):
 while True:
     request = can_socket.recv()
     if request is not None:
-        if len(request) > 1:
+        if len(request) >= 1:
             print("Request: " + request.hex())
             response = process_request(request)
             if response is not None:

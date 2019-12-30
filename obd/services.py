@@ -31,6 +31,10 @@ def get_ecu_name():
     return bytes([0x00]) + "TEST_ECU".encode()
 
 
+def get_dtcs():
+    return 0x0477.to_bytes(2, BIG_ENDIAN)
+
+
 SERVICES = [
     {"id": 0x01, "description": "Show current data",
      "pids": [
@@ -39,6 +43,7 @@ SERVICES = [
          {"id": 0x2F, "description": "Fuel tank level input", "response": get_fuel_level()},
          {"id": 0x51, "description": "Fuel type", "response": get_fuel_type()}
      ]},
+    {"id": 0x03, "description": "Show DTCs", "response": get_dtcs()},
     {"id": 0x09, "description": "Request vehicle information",
      "pids": [
          {"id": 0x02, "description": "Vehicle Identification Number(VIN)", "response": get_vin()},
@@ -56,13 +61,22 @@ def process_service_request(requested_service, requested_pid):
             for pid in pids:
                 if pid.get("id") == requested_pid:
                     return pid.get("response")
-        return None
+    elif isinstance(requested_service, int) and requested_pid is None:
+        return get_service_response(requested_service)
+    return None
 
 
 def get_service_pids(requested_service):
     for service in SERVICES:
         if service.get("id") == requested_service:
             return service.get("pids")
+    return None
+
+
+def get_service_response(requested_service):
+    for service in SERVICES:
+        if service.get("id") == requested_service:
+            return service.get("response")
     return None
 
 
