@@ -2,14 +2,23 @@ BIG_ENDIAN = "big"
 
 PADDING = 0x00
 
+VEHICLE_SPEED_MAX = 255
+
+VEHICLE_SPEED_ACCELERATION = 1
+
 vehicle_speed = 0
 
 
 def get_vehicle_speed():
     global vehicle_speed
-    result = vehicle_speed.to_bytes(1, BIG_ENDIAN)
-    vehicle_speed = (vehicle_speed + 5) % 255
-    return result
+    current_speed = vehicle_speed.to_bytes(1, BIG_ENDIAN)
+    increment_vehicle_speed()
+    return current_speed
+
+
+def increment_vehicle_speed():
+    global vehicle_speed
+    vehicle_speed = (vehicle_speed + VEHICLE_SPEED_ACCELERATION) % (VEHICLE_SPEED_MAX + 1)
 
 
 def get_fuel_level():
