@@ -37,6 +37,29 @@ class TestEcuInfo(unittest.TestCase):
         self.assertAlmostEqual(ENGINE_TEMP_MAX, int(ecu_info.get_engine_temperature().hex(), 16), delta=(
                 ENGINE_TEMP_MAX - ENGINE_TEMP_MIN))
 
+    def test_get_vin_has_18_bytes(self):
+        self.assertEqual(18, len(ecu_info.get_vin()))
+
+    def test_get_vin_first_byte_is_0(self):
+        self.assertEqual(0, ecu_info.get_vin()[0])
+
+    def test_get_vin_has_20_bytes(self):
+        self.assertEqual(20, len(ecu_info.get_ecu_name()))
+
+    def test_get_fuel_level_has_1_byte(self):
+        self.assertEqual(1, len(ecu_info.get_fuel_level()))
+
+    def test_get_fuel_level_is_smaller_equal_than_100(self):
+        fuel_level = int(ecu_info.get_fuel_level().hex(), 16) * (100/255)
+        self.assertTrue(100 >= fuel_level > 0)
+
+    def test_get_fuel_type_has_1_byte(self):
+        self.assertEqual(1, len(ecu_info.get_fuel_type()))
+
+    def test_get_fuel_type_is_smaller_equal_than_23(self):
+        # see https://en.wikipedia.org/wiki/OBD-II_PIDs#Fuel_Type_Coding
+        self.assertTrue(23 >= int(ecu_info.get_fuel_type().hex(), 16) > 0)
+
 
 if __name__ == '__main__':
     unittest.main()
