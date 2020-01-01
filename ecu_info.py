@@ -1,3 +1,5 @@
+import random
+
 BIG_ENDIAN = "big"
 
 PADDING = 0x00
@@ -5,6 +7,10 @@ PADDING = 0x00
 VEHICLE_SPEED_MAX = 255
 
 VEHICLE_SPEED_ACCELERATION = 1
+
+ENGINE_TEMP_MIN = 130  # 90 C - 40
+
+ENGINE_TEMP_MAX = 150  # 110 C - 40
 
 vehicle_speed = 0
 
@@ -26,7 +32,7 @@ def get_fuel_level():
 
 
 def get_engine_temperature():
-    return 0x20.to_bytes(1, BIG_ENDIAN)
+    return random.randrange(ENGINE_TEMP_MIN, ENGINE_TEMP_MAX).to_bytes(1, BIG_ENDIAN)
 
 
 def get_fuel_type():

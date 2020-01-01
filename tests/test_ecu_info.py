@@ -3,6 +3,10 @@ import ecu_info
 
 BIG_ENDIAN = "big"
 
+ENGINE_TEMP_MIN = 130
+
+ENGINE_TEMP_MAX = 150
+
 
 class TestEcuInfo(unittest.TestCase):
 
@@ -23,6 +27,15 @@ class TestEcuInfo(unittest.TestCase):
 
     def test_get_fuel_level_is_one_byte(self):
         self.assertEqual(1, len(ecu_info.get_fuel_level()))
+
+    def test_get_engine_temperature_is_one_byte(self):
+        self.assertEqual(1, len(ecu_info.get_engine_temperature()))
+
+    def test_get_engine_temperature(self):
+        self.assertAlmostEqual(ENGINE_TEMP_MIN, int(ecu_info.get_engine_temperature().hex(), 16), delta=(
+                ENGINE_TEMP_MAX - ENGINE_TEMP_MIN))
+        self.assertAlmostEqual(ENGINE_TEMP_MAX, int(ecu_info.get_engine_temperature().hex(), 16), delta=(
+                ENGINE_TEMP_MAX - ENGINE_TEMP_MIN))
 
 
 if __name__ == '__main__':
