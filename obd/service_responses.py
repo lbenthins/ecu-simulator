@@ -108,7 +108,8 @@ def get_dtcs():
         dtc_second_byte = get_dtc_second_byte(dtc)
         dtc_bytes = dtc_first_byte + dtc_second_byte
         dtcs_bytes = dtcs_bytes + dtc_bytes
-    return dtcs_bytes
+    number_of_dtcs = int(len(dtcs_bytes) / 2).to_bytes(1, BIG_ENDIAN)
+    return number_of_dtcs + dtcs_bytes
 
 
 def get_dtc_first_byte(dtc):
