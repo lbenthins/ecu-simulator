@@ -23,6 +23,10 @@ ENGINE_TEMP_MIN = 130  # 90 C - 40
 
 ENGINE_TEMP_MAX = 150  # 110 C - 40
 
+DTC_TYPES = {"P": "00", "C": "01", "B": "10", "U": "11"}
+
+DTC_STANDARD_CODES = {"0": "00", "1": "01", "2": "10", "3": "11"}
+
 BIG_ENDIAN = "big"
 
 vehicle_speed = 0
@@ -97,4 +101,22 @@ def add_ecu_name_padding(ecu_name):
 
 
 def get_dtcs():
-    return 0x0504770001000200030004.to_bytes(11, BIG_ENDIAN)
+    dtcs_bytes = bytearray()
+    dtcs = ecu_config.get_dtcs()
+    for dtc in dtcs:
+        dtc_first_byte = get_dtc_first_byte(dtc)
+        dtc_second_byte = get_dtc_second_byte(dtc)
+        dtc_bytes = dtc_first_byte + dtc_second_byte
+        dtcs_bytes = dtcs_bytes + dtc_bytes
+    return dtcs_bytes
+
+
+def get_dtc_first_byte(dtc):
+    bits_0_3 = int(DTC_TYPES.get(dtc[0]) + DTC_STANDARD_CODES.get(dtc[1]) + "0000", 2).to_bytes(1, BIG_ENDIAN)
+    bits_4_7 = int(dtc[2], 16).to_bytes(1, BIG_ENDIAN)
+    return (int(bits_0_3.hex(), 16) | int(bits_4_7.hex(), 16)).to_bytes(1, BIG_ENDIAN)
+
+
+def get_dtc_second_byte(dtc):
+    dtc_second_byte = int((dtc[3] + dtc[4]), 16).to_bytes(1, BIG_ENDIAN)
+    return dtc_second_byte

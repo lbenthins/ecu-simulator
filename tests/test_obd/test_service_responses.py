@@ -60,6 +60,9 @@ class TestServiceResponses(unittest.TestCase):
         # see https://en.wikipedia.org/wiki/OBD-II_PIDs#Fuel_Type_Coding
         self.assertTrue(23 >= int(service_responses.get_fuel_type().hex(), 16) > 0)
 
+    def test_get_dtcs(self):
+        print(service_responses.get_dtcs().hex())
+
 
 if __name__ == '__main__':
     unittest.main()

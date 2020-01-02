@@ -20,3 +20,7 @@ def get_fuel_level():
 
 def get_fuel_type():
     return CONFIG["fuel_type"]
+
+
+def get_dtcs():
+    return CONFIG["dtcs"]
