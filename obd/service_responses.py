@@ -1,6 +1,7 @@
 import random
 import ecu_config
 
+
 DEFAULT_ECU_NAME = "ECU_SIMULATOR"
 
 DEFAULT_VIN = "TESTVIN0123456789"
@@ -15,6 +16,8 @@ MAX_NUMBER_OF_CHARS_VIN = 17
 
 MAX_NUMBER_OF_FUEL_TYPES = 23
 
+FUEL_LEVEL_MAX = 100
+
 VEHICLE_SPEED_MAX = 255
 
 VEHICLE_SPEED_ACCELERATION = 1
@@ -23,9 +26,13 @@ ENGINE_TEMP_MIN = 130  # 90 C - 40
 
 ENGINE_TEMP_MAX = 150  # 110 C - 40
 
-DTC_TYPES = {"P": "00", "C": "01", "B": "10", "U": "11"}
+DTC_GROUP = {"P": "00", "B": "01", "C": "10", "U": "11"}
 
-DTC_STANDARD_CODES = {"0": "00", "1": "01", "2": "10", "3": "11"}
+DTC_TYPE = {"0": "00", "1": "01", "2": "10", "3": "11"}
+
+DTC_LENGTH = 5
+
+MAX_NUMBER_OF_DTCS_IN_RESPONSE = 255
 
 BIG_ENDIAN = "big"
 
@@ -56,7 +63,7 @@ def get_fuel_level():
 
 
 def validate_fuel_level(fuel_level):
-    if isinstance(fuel_level, int) and fuel_level <= 100:
+    if isinstance(fuel_level, int) and fuel_level <= FUEL_LEVEL_MAX:
         return fuel_level
     return DEFAULT_FUEL_LEVEL
 
@@ -101,23 +108,39 @@ def add_ecu_name_padding(ecu_name):
 
 
 def get_dtcs():
-    dtcs_bytes = bytearray()
     dtcs = ecu_config.get_dtcs()
+    dtcs_bytes = bytearray()
     for dtc in dtcs:
-        dtc_first_byte = get_dtc_first_byte(dtc)
-        dtc_second_byte = get_dtc_second_byte(dtc)
-        dtc_bytes = dtc_first_byte + dtc_second_byte
-        dtcs_bytes = dtcs_bytes + dtc_bytes
-    number_of_dtcs = int(len(dtcs_bytes) / 2).to_bytes(1, BIG_ENDIAN)
-    return number_of_dtcs + dtcs_bytes
+        if is_dtc_valid(dtc):
+            dtcs_bytes += get_dtc_first_byte(dtc) + get_dtc_second_byte(dtc)
+    return add_number_of_dtcs_to_response(dtcs_bytes)
+
+
+def add_number_of_dtcs_to_response(dtcs_bytes):
+    number_of_dtcs = len(dtcs_bytes) / 2
+    if MAX_NUMBER_OF_DTCS_IN_RESPONSE >= number_of_dtcs > 0:
+        return int(number_of_dtcs).to_bytes(1, BIG_ENDIAN) + dtcs_bytes
+    return bytes(1)
+
+
+def is_dtc_valid(dtc):
+    return len(dtc) == DTC_LENGTH and DTC_GROUP.get(dtc[0]) is not None and DTC_TYPE.get(dtc[1]) is not None \
+           and is_hex_value(dtc[2]) and is_hex_value(dtc[3]) and is_hex_value(dtc[4])
+
+
+def is_hex_value(value):
+    try:
+        int(value, 16)
+        return True
+    except ValueError:
+        return False
 
 
 def get_dtc_first_byte(dtc):
-    bits_0_3 = int(DTC_TYPES.get(dtc[0]) + DTC_STANDARD_CODES.get(dtc[1]) + "0000", 2).to_bytes(1, BIG_ENDIAN)
-    bits_4_7 = int(dtc[2], 16).to_bytes(1, BIG_ENDIAN)
-    return (int(bits_0_3.hex(), 16) | int(bits_4_7.hex(), 16)).to_bytes(1, BIG_ENDIAN)
+    bits_0_3 = int(DTC_GROUP.get(dtc[0]) + DTC_TYPE.get(dtc[1]) + "0000", 2)
+    bits_4_7 = int("0000" + dtc[2], 16)
+    return (bits_0_3 | bits_4_7).to_bytes(1, BIG_ENDIAN)
 
 
 def get_dtc_second_byte(dtc):
-    dtc_second_byte = int((dtc[3] + dtc[4]), 16).to_bytes(1, BIG_ENDIAN)
-    return dtc_second_byte
+    return int((dtc[3] + dtc[4]), 16).to_bytes(1, BIG_ENDIAN)
