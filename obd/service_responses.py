@@ -1,5 +1,5 @@
 import random
-import ecu_config
+import ecu_config_reader
 
 
 DEFAULT_ECU_NAME = "ECU_SIMULATOR"
@@ -58,7 +58,7 @@ def get_engine_temperature():
 def get_fuel_level():
     # the OBD device calculates the fuel level: (100/255) * fuel level
     # therefore, fuel level is multiplied by (255/100)
-    fuel_level = validate_fuel_level(ecu_config.get_fuel_level())
+    fuel_level = validate_fuel_level(ecu_config_reader.get_fuel_level())
     return int(fuel_level * (255 / 100)).to_bytes(1, BIG_ENDIAN)
 
 
@@ -69,7 +69,7 @@ def validate_fuel_level(fuel_level):
 
 
 def get_fuel_type():
-    fuel_type = validate_fuel_type(ecu_config.get_fuel_type())
+    fuel_type = validate_fuel_type(ecu_config_reader.get_fuel_type())
     return fuel_type.to_bytes(1, BIG_ENDIAN)
 
 
@@ -80,7 +80,7 @@ def validate_fuel_type(fuel_type):
 
 
 def get_vin():
-    vin = ecu_config.get_vin()
+    vin = ecu_config_reader.get_vin()
     if len(vin) > MAX_NUMBER_OF_CHARS_VIN:
         return add_vin_padding(DEFAULT_VIN)
     return add_vin_padding(vin)
@@ -94,7 +94,7 @@ def add_vin_padding(vin):
 
 
 def get_ecu_name():
-    ecu_name = ecu_config.get_ecu_name()
+    ecu_name = ecu_config_reader.get_ecu_name()
     if len(ecu_name) > MAX_NUMBER_OF_CHARS_ECU_NAME:
         return add_ecu_name_padding(DEFAULT_ECU_NAME)
     return add_ecu_name_padding(ecu_name)
@@ -108,7 +108,7 @@ def add_ecu_name_padding(ecu_name):
 
 
 def get_dtcs():
-    dtcs = ecu_config.get_dtcs()
+    dtcs = ecu_config_reader.get_dtcs()
     dtcs_bytes = bytearray()
     for dtc in dtcs:
         if is_dtc_valid(dtc):

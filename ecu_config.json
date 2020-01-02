@@ -1,0 +1,22 @@
+{
+  "vin": {
+    "value": "TESTVIN0123456789",
+    "description": "Vehicle Identification Number. Max 17 characters"
+  },
+  "ecu_name": {
+    "value": "ECU_SIMULATOR",
+    "description": "Name of the ECU. Max 20 characters"
+  },
+  "fuel_level": {
+    "value": 50,
+    "description": "Fuel Level. Between 0 and 100"
+  },
+  "fuel_type": {
+    "value": 1,
+    "description": "Fuel type (e.g., 1=Gasoline). See https://en.wikipedia.org/wiki/OBD-II_PIDs#Fuel_Type_Coding"
+  },
+  "dtcs": {
+    "value": ["B1477", "P0001"],
+    "description": "List of Diagnostic Trouble Codes. The list can contain Max 255 DTCs"
+  }
+}

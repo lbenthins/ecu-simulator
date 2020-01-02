@@ -1,7 +1,0 @@
-{
-  "vin": "TESTVIN0123456789",
-  "ecu_name": "ECU_SIMULATOR",
-  "fuel_level": 50,
-  "fuel_type": 1,
-  "dtcs": ["B1477", "P0001"]
-}
