@@ -13,9 +13,7 @@ MAX_NUMBER_OF_CHARS_ECU_NAME = 20
 
 MAX_NUMBER_OF_CHARS_VIN = 17
 
-BIG_ENDIAN = "big"
-
-PADDING = 0x00
+MAX_NUMBER_OF_FUEL_TYPES = 23
 
 VEHICLE_SPEED_MAX = 255
 
@@ -24,6 +22,8 @@ VEHICLE_SPEED_ACCELERATION = 1
 ENGINE_TEMP_MIN = 130  # 90 C - 40
 
 ENGINE_TEMP_MAX = 150  # 110 C - 40
+
+BIG_ENDIAN = "big"
 
 vehicle_speed = 0
 
@@ -63,7 +63,7 @@ def get_fuel_type():
 
 
 def validate_fuel_type(fuel_type):
-    if 23 >= fuel_type > 0:
+    if MAX_NUMBER_OF_FUEL_TYPES >= fuel_type > 0:
         return fuel_type
     return DEFAULT_FUEL_TYPE
 

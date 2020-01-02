@@ -1,4 +1,4 @@
-import ecu_info
+from obd import service_responses as responses
 
 BIG_ENDIAN = "big"
 
@@ -8,20 +8,20 @@ SUPPORTED_PIDS_RESPONSE_INIT_VALUE = 0x00000001
 
 SUPPORTED_PIDS_RESPONSE_NUMBER_OF_PIDs = 32
 
-FUEL_TYPE = ecu_info.get_fuel_type()
+FUEL_TYPE = responses.get_fuel_type()
 
-DTCs = ecu_info.get_dtcs()
+DTCs = responses.get_dtcs()
 
-VIN = ecu_info.get_vin()
+VIN = responses.get_vin()
 
-ECU_NAME = ecu_info.get_ecu_name()
+ECU_NAME = responses.get_ecu_name()
 
 SERVICES = [
     {"id": 0x01, "description": "Show current data", "response": lambda: None,
      "pids": [
-         {"id": 0x05, "description": "Engine coolant temperature", "response": lambda: ecu_info.get_engine_temperature()},
-         {"id": 0x0D, "description": "Vehicle speed", "response": lambda: ecu_info.get_vehicle_speed()},
-         {"id": 0x2F, "description": "Fuel tank level input", "response": lambda: ecu_info.get_fuel_level()},
+         {"id": 0x05, "description": "Engine coolant temperature", "response": lambda: responses.get_engine_temperature()},
+         {"id": 0x0D, "description": "Vehicle speed", "response": lambda: responses.get_vehicle_speed()},
+         {"id": 0x2F, "description": "Fuel tank level input", "response": lambda: responses.get_fuel_level()},
          {"id": 0x51, "description": "Fuel type", "response": lambda: FUEL_TYPE}
      ]},
     {"id": 0x03, "description": "Show DTCs", "response": lambda: DTCs},
