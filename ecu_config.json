@@ -36,7 +36,7 @@
     "description": "Two types are possible: virtual and hardware"
   },
   "can_bitrate": {
-    "value": "50000",
+    "value": "500000",
     "description": "CAN bitrate (refer to the specification of your CAN hardware). Only applicable for can_interface_type: hardware"
   },
   "isotp_ko_file_path": {
