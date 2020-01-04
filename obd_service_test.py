@@ -1,16 +1,18 @@
 import isotp
 from obd import services
+import ecu_config_reader as ecu_config
 
-CAN_INTERFACE = "can0"
+CAN_INTERFACE = ecu_config.get_can_interface()
 POSITIVE_ANSWER = 0x40
 
-RX_ID = 0x7DF
-TX_ID = 0x7E8
+RX_ID_FUNCTIONAL = ecu_config.get_obd_broadcast_address()
+RX_ID_PHYSICAL = ecu_config.get_obd_ecu_address()
+TX_ID = RX_ID_PHYSICAL + 8
 
 can_socket = isotp.socket()
 can_socket2 = isotp.socket()
-can_socket.bind(CAN_INTERFACE, isotp.Address(rxid=RX_ID, txid=TX_ID))
-can_socket2.bind(CAN_INTERFACE, isotp.Address(rxid=0x7E0, txid=TX_ID))
+can_socket.bind(CAN_INTERFACE, isotp.Address(rxid=RX_ID_FUNCTIONAL, txid=TX_ID))
+can_socket2.bind(CAN_INTERFACE, isotp.Address(rxid=RX_ID_PHYSICAL, txid=TX_ID))
 
 
 def process_request(req):

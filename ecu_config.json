@@ -18,5 +18,17 @@
   "dtcs": {
     "value": ["B1477", "P0001"],
     "description": "List of Diagnostic Trouble Codes. The list can contain Max 255 DTCs"
+  },
+  "obd_broadcast_address": {
+    "value": "0x7DF",
+    "description": "11-Bit broadcast address that the ECU listens on to receive OBD requests (functional address). The target address is obd_ecu_address + 0x8"
+  },
+  "obd_ecu_address": {
+    "value": "0x7E0",
+    "description": "11-Bit ECU address used to response to an OBD request (physical address). The target address is obd_ecu_address + 0x8"
+  },
+  "can_interface": {
+    "value": "can0",
+    "description": "CAN Interface used by the ECU simulator"
   }
 }

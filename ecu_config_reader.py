@@ -24,3 +24,23 @@ def get_fuel_type():
 
 def get_dtcs():
     return CONFIG["dtcs"].get("value")
+
+
+def get_obd_broadcast_address():
+    try:
+        return int(CONFIG["obd_broadcast_address"].get("value"), 16)
+    except ValueError as error:
+        print(error)
+        exit(1)
+
+
+def get_obd_ecu_address():
+    try:
+        return int(CONFIG["obd_ecu_address"].get("value"), 16)
+    except ValueError as error:
+        print(error)
+        exit(1)
+
+
+def get_can_interface():
+    return CONFIG["can_interface"].get("value")
