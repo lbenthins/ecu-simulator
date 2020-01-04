@@ -39,21 +39,22 @@ SERVICES = [
 def process_service_request(requested_sid, requested_pid):
     if is_service_request_valid(requested_sid, requested_pid):
         service_response, service_pids = get_service(requested_sid)
-        positive_response_prefix = get_positive_response_prefix(requested_sid, requested_pid)
         if service_pids is not None and requested_pid is not None:
             if is_supported_pids_request(requested_pid):
-                return positive_response_prefix + get_supported_pids_response(service_pids, requested_pid)
-            return get_pid_response(requested_pid, service_pids)
-        elif service_response is not None:
-            return positive_response_prefix + service_response
+                response = get_supported_pids_response(service_pids, requested_pid)
+                return add_response_prefix(requested_sid, requested_pid, response)
+            return add_response_prefix(requested_sid, requested_pid, get_pid_response(requested_pid, service_pids))
+        return add_response_prefix(requested_sid, requested_pid, service_response)
     return None
 
 
-def get_positive_response_prefix(requested_sid, requested_pid):
-    response_sid = bytes([POSITIVE_RESPONSE_MASK + requested_sid])
-    if requested_pid is None:
-        return response_sid
-    return response_sid + bytes([requested_pid])
+def add_response_prefix(requested_sid, requested_pid, response):
+    if response is not None:
+        response_sid = bytes([POSITIVE_RESPONSE_MASK + requested_sid])
+        if requested_pid is None:
+            return response_sid + response
+        return response_sid + bytes([requested_pid]) + response
+    return None
 
 
 def is_service_request_valid(requested_sid, requested_pid):
