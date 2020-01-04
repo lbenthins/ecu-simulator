@@ -1,12 +1,14 @@
 from obd import service_responses as responses
 
-BIG_ENDIAN = "big"
-
 SUPPORTED_PIDS_RESPONSE_MASK = 0x80000000
 
 SUPPORTED_PIDS_RESPONSE_INIT_VALUE = 0x00000001
 
 SUPPORTED_PIDS_RESPONSE_NUMBER_OF_PIDs = 32
+
+POSITIVE_RESPONSE_MASK = 0x40
+
+BIG_ENDIAN = "big"
 
 FUEL_TYPE = responses.get_fuel_type()
 
@@ -15,6 +17,7 @@ DTCs = responses.get_dtcs()
 VIN = responses.get_vin()
 
 ECU_NAME = responses.get_ecu_name()
+
 
 SERVICES = [
     {"id": 0x01, "description": "Show current data", "response": lambda: None,
@@ -33,25 +36,41 @@ SERVICES = [
 ]
 
 
-def process_service_request(requested_service, requested_pid):
-    if is_service_request_valid(requested_service, requested_pid):
-        service_response, service_pids = get_service(requested_service)
+def process_service_request(requested_sid, requested_pid):
+    if is_service_request_valid(requested_sid, requested_pid):
+        service_response, service_pids = get_service(requested_sid)
+        positive_response_prefix = get_positive_response_prefix(requested_sid, requested_pid)
         if service_pids is not None and requested_pid is not None:
             if is_supported_pids_request(requested_pid):
-                return get_supported_pids_response(service_pids, requested_pid)
+                return positive_response_prefix + get_supported_pids_response(service_pids, requested_pid)
             return get_pid_response(requested_pid, service_pids)
-        return service_response
+        return positive_response_prefix + service_response
     return None
 
 
-def is_service_request_valid(requested_service, requested_pid):
-    return (isinstance(requested_service, int) and isinstance(requested_pid, int)) \
-           or (isinstance(requested_service, int) and requested_pid is None)
+def get_positive_response_prefix(requested_sid, requested_pid):
+    response_sid = bytes([POSITIVE_RESPONSE_MASK + requested_sid])
+    if requested_pid is None:
+        return response_sid
+    return response_sid + bytes([requested_pid])
 
 
-def get_service(requested_service):
+def is_service_request_valid(requested_sid, requested_pid):
+    is_sid_valid_ = is_sid_valid(requested_sid)
+    return is_sid_valid_ and is_pid_valid(requested_pid) or (is_sid_valid_ and requested_pid is None)
+
+
+def is_sid_valid(sid):
+    return isinstance(sid, int) and 10 >= sid >= 1
+
+
+def is_pid_valid(pid):
+    return isinstance(pid, int) and 255 >= pid >= 0
+
+
+def get_service(requested_sid):
     for service in SERVICES:
-        if service.get("id") == requested_service:
+        if service.get("id") == requested_sid:
             return service.get("response")(), service.get("pids")
     return None, None
 

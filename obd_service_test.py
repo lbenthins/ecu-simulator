@@ -3,7 +3,6 @@ from obd import services
 import ecu_config_reader as ecu_config
 
 CAN_INTERFACE = ecu_config.get_can_interface()
-POSITIVE_ANSWER = 0x40
 
 RX_ID_FUNCTIONAL = ecu_config.get_obd_broadcast_address()
 RX_ID_PHYSICAL = ecu_config.get_obd_ecu_address()
@@ -22,9 +21,7 @@ def process_request(req):
         requested_pid = req[1]
     service_response = services.process_service_request(requested_service, requested_pid)
     if service_response is not None:
-        if requested_pid is None:
-            return bytes([POSITIVE_ANSWER + requested_service]) + service_response
-        return bytes([POSITIVE_ANSWER + requested_service]) + bytes([requested_pid]) + service_response
+        return service_response
     return None
 
 
