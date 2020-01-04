@@ -1,13 +1,17 @@
 import unittest
 from obd import services
 
-INVALID_SERVICE_ID = "yy"
+INVALID_SID = 0xB
 
-INVALID_PID = "xx"
+INVALID_PID = 256
 
-UNKNOWN_PID = 0xFF
+STRING_SID = "yy"
 
-UNKNOWN_SERVICE = 0xFF
+STRING_PID = "xx"
+
+UNSUPPORTED_PID = 0xFF
+
+UNSUPPORTED_SID = 0x08
 
 
 class TestServices(unittest.TestCase):
@@ -41,18 +45,20 @@ class TestServices(unittest.TestCase):
         response = services.process_service_request(requested_sid=0x03, requested_pid=None)
         self.assertIsNotNone(response)
 
-    def test_process_unknown_service_returns_none(self):
-        response = services.process_service_request(requested_sid=UNKNOWN_SERVICE, requested_pid=0x00)
-        self.assertIsNone(response)
+    def test_process_unsupported_service_returns_none(self):
+        self.assertIsNone(services.process_service_request(requested_sid=UNSUPPORTED_SID, requested_pid=0x00))
+        self.assertIsNone(services.process_service_request(requested_sid=UNSUPPORTED_SID, requested_pid=None))
 
     def test_process_service_unknown_pid_returns_none(self):
-        response = services.process_service_request(requested_sid=0x01, requested_pid=UNKNOWN_PID)
-        self.assertIsNone(response)
+        self.assertIsNone(services.process_service_request(requested_sid=0x01, requested_pid=UNSUPPORTED_PID))
 
     def test_process_invalid_service_request_returns_none(self):
-        self.assertIsNone(services.process_service_request(requested_sid=INVALID_SERVICE_ID, requested_pid=0x00))
+        self.assertIsNone(services.process_service_request(requested_sid=INVALID_SID, requested_pid=0x00))
         self.assertIsNone(services.process_service_request(requested_sid=0x01, requested_pid=INVALID_PID))
-        self.assertIsNone(services.process_service_request(requested_sid=INVALID_SERVICE_ID, requested_pid=INVALID_PID))
+        self.assertIsNone(services.process_service_request(requested_sid=INVALID_SID, requested_pid=INVALID_PID))
+        self.assertIsNone(services.process_service_request(requested_sid=STRING_SID, requested_pid=0x00))
+        self.assertIsNone(services.process_service_request(requested_sid=0x01, requested_pid=STRING_PID))
+        self.assertIsNone(services.process_service_request(requested_sid=STRING_SID, requested_pid=STRING_PID))
 
 
 if __name__ == '__main__':

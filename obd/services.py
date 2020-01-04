@@ -44,7 +44,8 @@ def process_service_request(requested_sid, requested_pid):
             if is_supported_pids_request(requested_pid):
                 return positive_response_prefix + get_supported_pids_response(service_pids, requested_pid)
             return get_pid_response(requested_pid, service_pids)
-        return positive_response_prefix + service_response
+        elif service_response is not None:
+            return positive_response_prefix + service_response
     return None
 
 
