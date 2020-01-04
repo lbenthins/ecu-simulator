@@ -1,6 +1,5 @@
 import obd_listener
-import _thread
+from threading import Thread
 
-_thread.start_new_thread(obd_listener.start, ())
 
-print("OBD Listener started")
+Thread(target=obd_listener.start).start()

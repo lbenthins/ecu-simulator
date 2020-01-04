@@ -12,20 +12,17 @@ TARGET_ADDRESS = ECU_ADDRESS + 8
 
 
 def start():
-    try:
-        request_socket = create_isotp_socket(BROADCAST_ADDRESS, TARGET_ADDRESS)
-        response_socket = create_isotp_socket(ECU_ADDRESS, TARGET_ADDRESS)
-        while True:
-            request = request_socket.recv()
-            requested_pid, requested_sid = get_sid_and_pid(request)
-            if requested_sid is not None:
-                print("Request: " + request.hex())
-                response = services.process_service_request(requested_sid, requested_pid)
-                if response is not None:
-                    print("Response: " + response.hex())
-                    response_socket.send(response)
-    except Exception as e:
-        print(e)
+    request_socket = create_isotp_socket(BROADCAST_ADDRESS, TARGET_ADDRESS)
+    response_socket = create_isotp_socket(ECU_ADDRESS, TARGET_ADDRESS)
+    while True:
+        request = request_socket.recv()
+        requested_pid, requested_sid = get_sid_and_pid(request)
+        if requested_sid is not None:
+            print("Request: " + request.hex())
+            response = services.process_service_request(requested_sid, requested_pid)
+            if response is not None:
+                print("Response: " + response.hex())
+                response_socket.send(response)
 
 
 def create_isotp_socket(receiver_address, target_address):
