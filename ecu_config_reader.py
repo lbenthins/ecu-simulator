@@ -44,3 +44,15 @@ def get_obd_ecu_address():
 
 def get_can_interface():
     return CONFIG["can_interface"].get("value")
+
+
+def get_can_interface_type():
+    return CONFIG["can_interface_type"].get("value")
+
+
+def get_can_bitrate():
+    return CONFIG["can_bitrate"].get("value")
+
+
+def get_isotp_ko_file_path():
+    return CONFIG["isotp_ko_file_path"].get("value")

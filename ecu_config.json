@@ -28,7 +28,19 @@
     "description": "11-Bit ECU address used to response to an OBD request (physical address). The target address is obd_ecu_address + 0x8"
   },
   "can_interface": {
-    "value": "can0",
+    "value": "vcan0",
     "description": "CAN Interface used by the ECU simulator"
+  },
+  "can_interface_type": {
+    "value": "virtual",
+    "description": "Two types are possible: virtual and hardware"
+  },
+  "can_bitrate": {
+    "value": "50000",
+    "description": "CAN bitrate (refer to the specification of your CAN hardware). Only applicable for can_interface_type: hardware"
+  },
+  "isotp_ko_file_path": {
+    "value": "/usr/lib/modules/5.3.0-kali2-amd64/kernel/net/can/can-isotp.ko",
+    "description": "File path of the ISO-TP Kernel module (see https://github.com/hartkopp/can-isotp)"
   }
 }
