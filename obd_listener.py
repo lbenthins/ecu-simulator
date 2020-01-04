@@ -12,17 +12,20 @@ TARGET_ADDRESS = ECU_ADDRESS + 8
 
 
 def start():
-    request_socket = create_isotp_socket(BROADCAST_ADDRESS, TARGET_ADDRESS)
-    response_socket = create_isotp_socket(ECU_ADDRESS, TARGET_ADDRESS)
-    while True:
-        request = request_socket.recv()
-        requested_pid, requested_sid = get_sid_and_pid(request)
-        if requested_sid is not None:
-            print("Request: " + request.hex())
-            response = services.process_service_request(requested_sid, requested_pid)
-            if response is not None:
-                print("Response: " + response.hex())
-                response_socket.send(response)
+    try:
+        request_socket = create_isotp_socket(BROADCAST_ADDRESS, TARGET_ADDRESS)
+        response_socket = create_isotp_socket(ECU_ADDRESS, TARGET_ADDRESS)
+        while True:
+            request = request_socket.recv()
+            requested_pid, requested_sid = get_sid_and_pid(request)
+            if requested_sid is not None:
+                print("Request: " + request.hex())
+                response = services.process_service_request(requested_sid, requested_pid)
+                if response is not None:
+                    print("Response: " + response.hex())
+                    response_socket.send(response)
+    except Exception as e:
+        print(e)
 
 
 def create_isotp_socket(receiver_address, target_address):
@@ -34,8 +37,9 @@ def create_isotp_socket(receiver_address, target_address):
 def get_sid_and_pid(request):
     pid, sid = None, None
     if request is not None:
-        if len(request) == 1:
+        request_bytes_length = len(request)
+        if request_bytes_length >= 1:
             sid = request[0]
-        if len(request) == 2:
+        if request_bytes_length >= 2:
             pid = request[1]
     return pid, sid
