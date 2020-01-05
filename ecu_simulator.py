@@ -1,3 +1,4 @@
+import sys
 from threading import Thread
 import os
 import obd_listener
@@ -6,6 +7,11 @@ import ecu_config_reader as ecu_config
 VCAN_SETUP_FILE = "vcan_setup.sh"
 
 CAN_SETUP_FILE = "can_setup.sh"
+
+
+def main():
+    set_up_can_interface()
+    start_obd_listener_thread()
 
 
 def set_up_can_interface():
@@ -19,5 +25,9 @@ def set_up_can_interface():
         os.system("sh " + CAN_SETUP_FILE + " " + can_interface + " " + can_bitrate + " " + isotp_ko_file_path)
 
 
-set_up_can_interface()
-Thread(target=obd_listener.start).start()
+def start_obd_listener_thread():
+    Thread(target=obd_listener.start).start()
+
+
+if __name__ == '__main__':
+    sys.exit(main())

@@ -33,7 +33,7 @@
   },
   "can_interface_type": {
     "value": "virtual",
-    "description": "Two types are possible: virtual and hardware"
+    "description": "Two types are possible: virtual and hardware. If any other value is provided, the ecu-simulator does not set up the CAN interface and ISO-TP linux kernel module"
   },
   "can_bitrate": {
     "value": "500000",
