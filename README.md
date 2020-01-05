@@ -1,2 +1,4 @@
 # ECU Simulator
-ECU simulation (some OBD-2 and UDS services)
+This tool simulates some vehicle diagnostic services.  
+
+## Requirements 
