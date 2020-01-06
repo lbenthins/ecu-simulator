@@ -21,11 +21,15 @@
   },
   "obd_broadcast_address": {
     "value": "0x7DF",
-    "description": "11-Bit broadcast address that the ECU listens on to receive OBD requests (functional address). The target address is obd_ecu_address + 0x8"
+    "description": "11-Bit broadcast address the ECU uses to receive OBD requests (functional addressing). The target address is: obd_ecu_address + 0x8"
   },
   "obd_ecu_address": {
     "value": "0x7E0",
-    "description": "11-Bit ECU address used to response to an OBD request (physical address). The target address is obd_ecu_address + 0x8"
+    "description": "11-Bit physical address the ECU uses to response to an OBD request. The target address is: obd_ecu_address + 0x8"
+  },
+  "uds_ecu_address": {
+    "value": "0x7E1",
+    "description": "11-Bit physical address the ECU uses to receive and response to an UDS request (physical addressing). The target address is: uds_ecu_address + 0x8. The UDS module does not use functional addressing"
   },
   "can_interface": {
     "value": "vcan0",
