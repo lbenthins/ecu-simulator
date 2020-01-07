@@ -20,6 +20,10 @@ This tool simulates some vehicle diagnostic services.
 
 ### UDS
 
+| Service |          Description                                   |
+|:-------:|:-------------------------------------------------------|
+| 0x10    | ECUReset. Reset types: 0x01, 0x02, 0x03, 0x04 and 0x05 |
+
 ## Addressing
 
 **OBD:** Functional. See options `obd_broadcast_address` and `obd_ecu_address` in `ecu_config.json`.
