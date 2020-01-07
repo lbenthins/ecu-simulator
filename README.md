@@ -1,6 +1,6 @@
 # ECU Simulator
 
-This tool simulates some vehicle diagnostic services.  
+This Python tool simulates some vehicle diagnostic services.  
 
 ## Supported Services
 
@@ -31,3 +31,28 @@ This tool simulates some vehicle diagnostic services.
 **UDS:** Physical. See option `obd_ecu_address` in `ecu_config.json`.
 
 ## Requirements 
+
+## Test Environment  
+
+## Usage 
+
+The ecu-simulator try to set up the CAN interface and load the ISO-TP linux kernel module (you need to configure `can_interface`, `can_interface_type`, `can_bitrate`, and `isotp_ko_file_path` in `ecu_config.json`). To perform this task, the tool must be started with root privileges:   
+
+`sudo python3 ecu-simulator.py`
+
+If you do not want to start the tool with root privileges, you can do the following:
+
+```
+# set up CAN hardware interface
+sudo sh can_setup.sh
+
+# or set up CAN virtual interface 
+sudo sh vcan_setup.sh
+
+# and then start the tool without sudo
+python3 ecu-simulator.py
+``` 
+
+
+
+
