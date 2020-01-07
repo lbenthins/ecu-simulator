@@ -38,7 +38,9 @@ This Python tool simulates some vehicle diagnostic services.
 
 The ecu-simulator try to set up the CAN interface and load the ISO-TP linux kernel module (you need to configure `can_interface`, `can_interface_type`, `can_bitrate`, and `isotp_ko_file_path` in `ecu_config.json`). To perform this task, the tool must be started with root privileges:   
 
-`sudo python3 ecu-simulator.py`
+```
+sudo python3 ecu-simulator.py
+```
 
 If you do not want to start the tool with root privileges, you can do the following:
 
