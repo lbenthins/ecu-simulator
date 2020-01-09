@@ -1,11 +1,19 @@
 import unittest
 from uds import services
+import ecu_config_reader as ecu_config
+import dtc_utils
 
 ECU_RESET = 0x11
 
 ECU_RESET_HARD = 0x01
 
 ECU_RESET_ENABLE_RAPID_POWER_DOWN = 0x04
+
+READ_DTC_INFO = 0x19
+
+READ_DTC_INFO_BY_STATUS_MASK = 0x02
+
+DTC_STATUS_AVAILABILITY_MASK = 0xFF
 
 NEGATIVE_RESPONSE_ID = 0x7F
 
@@ -54,6 +62,16 @@ class TestUdsServices(unittest.TestCase):
             [NRC_INCORRECT_MESSAGE_LENGTH_OR_INVALID_FORMAT])
         self.assertIsNotNone(response)
         self.assertEqual(3, len(response))
+        self.assertEqual(expected_response.hex(), response.hex())
+
+    def test_process_service_0x19(self):
+        request = bytes([READ_DTC_INFO]) + bytes([READ_DTC_INFO_BY_STATUS_MASK])
+        response = services.process_service_request(request)
+        dtcs = ecu_config.get_dtcs()
+
+        expected_response = get_positive_response_sid(READ_DTC_INFO) + bytes([READ_DTC_INFO_BY_STATUS_MASK]) + bytes([DTC_STATUS_AVAILABILITY_MASK]) + dtc_utils.encode_uds_dtcs(dtcs)
+        self.assertIsNotNone(response)
+        # self.assertEqual(2, len(response))
         self.assertEqual(expected_response.hex(), response.hex())
 
 
