@@ -1,6 +1,6 @@
 # ECU Simulator
 
-This Python tool simulates some vehicle diagnostic services. It can be used to test OBD-II dongles, or tester devices that support OBD-II or UDS (ISO 14229) running on top of the ISO-TP (ISO 15765-4) protocol. 
+This Python tool simulates some vehicle diagnostic services. It can be used to test OBD-II dongles or tester devices that support the UDS (ISO 14229) and ISO-TP (ISO 15765-2) protocols. 
 
 This tool does NOT implement the ISO-TP protocol. It just simulates a couple of OBD and UDS services. The simulation consists in receiving a diagnostic request (e.g., get DTCs), and responding to it according to the protocol specifications. The data of some responses (e.g., VIN) must be defined in the `ecu_config.json` file.
 
