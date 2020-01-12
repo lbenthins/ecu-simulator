@@ -44,8 +44,6 @@ In both cases, only ISO-TP **normal addressing** (only CAN arbitration ID is use
 * [ISO-TP kernel module](https://github.com/hartkopp/can-isotp) It is NOT part of linux. It needs to be loaded before running the `ecu-simulator`.
 * [isotp](https://can-isotp.readthedocs.io/en/latest/) The `ecu-simulator` only uses [isotp.socket](https://can-isotp.readthedocs.io/en/latest/isotp/socket.html), which is a wrapper for the ISO-TP kernel module.
 
-## Test Environment  
-
 ## Usage 
 
 The `ecu-simulator` try to set up the CAN interface and load the ISO-TP linux kernel module (you need to configure `can_interface`, `can_interface_type`, `can_bitrate`, and `isotp_ko_file_path` in `ecu_config.json`). To perform this task, the tool must be started with root privileges:   
@@ -66,6 +64,21 @@ sudo sh vcan_setup.sh
 # and then start the tool without sudo
 python3 ecu-simulator.py
 ``` 
+
+## Test Environment  
+
+The `ecu-simulator` was tested on a Raspberry Pi (Raspbian, Linux Kernel 4.19) and PiCAN as CAN-Bus board. 
+
+### OBD-II
+
+The OBD-II services were tested using a real OBD-II scanner.
+
+![OBD-II test env](https://github.com/lbenthins/ecu-simulator/blob/readme/img/obd.jpg) 
+
+### UDS
+
+To test the UDS services, the [Caring Caribou](https://github.com/CaringCaribou/caringcaribou) tool was used.
+
 ## Contact
 
 lbenthins@gmail.com 
