@@ -75,9 +75,20 @@ The OBD-II services were tested using a real OBD-II scanner.
 
 <img src="https://github.com/lbenthins/ecu-simulator/blob/readme/img/obd.jpg" alt="OBD-II test env" width="555" height="606"/>
 
+<img src="https://github.com/lbenthins/ecu-simulator/blob/readme/img/obd_detecting.jpg" alt="OBD-II test env" width="407" height="314"/>
+
+<img src="https://github.com/lbenthins/ecu-simulator/blob/readme/img/obd_dtc.jpg" alt="OBD-II test env" width="407" height="314"/>
+
+<img src="https://github.com/lbenthins/ecu-simulator/blob/readme/img/obd_info.jpg" alt="OBD-II test env" width="407" height="314"/>
+
+
 ### UDS
 
 To test the UDS services, the [Caring Caribou](https://github.com/CaringCaribou/caringcaribou) tool was used.
+
+<img src="https://github.com/lbenthins/ecu-simulator/blob/readme/img/caringcaribou_1.png" alt="UDS test env" width="496" height="160" />
+
+<img src="https://github.com/lbenthins/ecu-simulator/blob/readme/img/caringcaribou_2.png" alt="UDS test env" width="496" height="160" />
 
 ## Contact
 
