@@ -1,8 +1,8 @@
 # ECU Simulator
 
-This Python tool simulates some vehicle diagnostic services. It can be used to test OBD-II dongles or tester devices that support the UDS (ISO 14229) and ISO-TP (ISO 15765-2) protocols. 
+This Python tool simulates some vehicle diagnostic services. It can be used to test OBD-II dongles or tester tools that support the UDS (ISO 14229) and ISO-TP (ISO 15765-2) protocols. 
 
-This tool does NOT implement the ISO-TP protocol. It just simulates a couple of OBD and UDS services. The simulation consists in receiving a diagnostic request (e.g., get DTCs), and responding to it according to the protocol specifications. The data of some responses (e.g., VIN) must be defined in the `ecu_config.json` file.
+This tool does NOT implement the ISO-TP protocol. It just simulates a couple of OBD and UDS services. The simulation consists in receiving a diagnostic request (e.g., Request DTCs (0x03)), and responding to it according to the protocol specifications. The data of some responses (e.g., VIN) must be defined in the `ecu_config.json` file.
 
 I created this project to learn more about the OBD and UDS protocols. I did my best to understand the specifications, however, if you suspect that something is implemented wrongly, please let me know. Any feedback will be very appreciated. 
 
@@ -31,7 +31,7 @@ I created this project to learn more about the OBD and UDS protocols. I did my b
  
 ## Addressing
 
-**OBD:** Functional. See options `obd_broadcast_address` and `obd_ecu_address` in `ecu_config.json`.
+**OBD:** Functional and physical. See options `obd_broadcast_address` and `obd_ecu_address` in `ecu_config.json`.
 
 **UDS:** Physical. See option `obd_ecu_address` in `ecu_config.json`.
 
@@ -41,12 +41,12 @@ In both cases, only ISO-TP **normal addressing** (only CAN arbitration ID is use
 
 * Python3
 * [SocketCAN](https://www.kernel.org/doc/Documentation/networking/can.txt) Implementation of the CAN protocol. This kernel module is part of Linux. 
-* [ISO-TP kernel module](https://github.com/hartkopp/can-isotp) It is NOT part of linux. It needs to be loaded before running the `ecu-simulator`.
+* [ISO-TP kernel module](https://github.com/hartkopp/can-isotp) It is NOT part of linux. It needs to be loaded before running the `ecu-simulator`. See `isotp_ko_file_path` in `ecu_config.json`.
 * [isotp](https://can-isotp.readthedocs.io/en/latest/) The `ecu-simulator` only uses [isotp.socket](https://can-isotp.readthedocs.io/en/latest/isotp/socket.html), which is a wrapper for the ISO-TP kernel module.
 
 ## Usage 
 
-The `ecu-simulator` try to set up the CAN interface and load the ISO-TP linux kernel module (you need to configure `can_interface`, `can_interface_type`, `can_bitrate`, and `isotp_ko_file_path` in `ecu_config.json`). To perform this task, the tool must be started with root privileges:   
+The `ecu-simulator` sets up the CAN interface and loads the ISO-TP linux kernel module (you need to configure `can_interface`, `can_interface_type`, `can_bitrate`, and `isotp_ko_file_path` in `ecu_config.json`). To perform this task, the tool must be started with root privileges:   
 
 ```
 sudo python3 ecu-simulator.py
@@ -56,18 +56,18 @@ If you do not want to start the tool with root privileges, you can do the follow
 
 ```
 # set up CAN hardware interface
-sudo sh can_setup.sh
+sudo sh can_setup.sh <CAN interface e.g., can0> <CAN bitrate e.g., 500000> <can-isotp.ko file pyth e.g., /lib/modules/4.19.75-v7+/kernel/net/can/can-isotp.ko>
 
 # or set up CAN virtual interface 
-sudo sh vcan_setup.sh
+sudo sh vcan_setup.sh <virtual CAN interface e.g., vcan0> <can-isotp.ko file pyth e.g., /lib/modules/4.19.75-v7+/kernel/net/can/can-isotp.ko>
 
 # and then start the tool without sudo
-python3 ecu-simulator.py
+python3 ecu_simulator.py
 ``` 
 
 ## Test Environment  
 
-The `ecu-simulator` was tested on a Raspberry Pi (Raspbian, Linux Kernel 4.19) and PiCAN as CAN-Bus board. 
+The `ecu-simulator` was tested on a Raspberry Pi (Raspbian, Linux Kernel 4.19) with PiCAN as CAN-Bus board. 
 
 ### OBD-II
 
