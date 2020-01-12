@@ -73,7 +73,7 @@ The `ecu-simulator` was tested on a Raspberry Pi (Raspbian, Linux Kernel 4.19) a
 
 The OBD-II services were tested using a real OBD-II scanner.
 
-![OBD-II test env](https://github.com/lbenthins/ecu-simulator/blob/readme/img/obd.jpg =555x606)  
+<img src="https://github.com/lbenthins/ecu-simulator/blob/readme/img/obd.jpg" alt="OBD-II test env" width="555" height="606"/>
 
 ### UDS
 
