@@ -6,9 +6,9 @@ DTC_LENGTH = 5
 
 BIG_ENDIAN = "big"
 
-DEFAULT_DTC_STATUS = 0x2F
-
 UDS_DTC_HIGH_BYTE = 0x01
+
+UDS_DTC_DEFAULT_STATUS = 0x2F
 
 
 def encode_obd_dtcs(dtcs):
@@ -24,7 +24,7 @@ def encode_uds_dtcs(dtcs):
     for dtc in dtcs:
         if is_dtc_valid(dtc):
             dtcs_bytes += get_dtc_first_byte(dtc) + get_dtc_second_byte(dtc) + bytes([UDS_DTC_HIGH_BYTE]) + \
-                          bytes([DEFAULT_DTC_STATUS])
+                          bytes([UDS_DTC_DEFAULT_STATUS])
     return dtcs_bytes
 
 

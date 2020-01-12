@@ -67,11 +67,36 @@ class TestUdsServices(unittest.TestCase):
     def test_process_service_0x19(self):
         request = bytes([READ_DTC_INFO]) + bytes([READ_DTC_INFO_BY_STATUS_MASK])
         response = services.process_service_request(request)
-        dtcs = ecu_config.get_dtcs()
-
-        expected_response = get_positive_response_sid(READ_DTC_INFO) + bytes([READ_DTC_INFO_BY_STATUS_MASK]) + bytes([DTC_STATUS_AVAILABILITY_MASK]) + dtc_utils.encode_uds_dtcs(dtcs)
+        dtcs = dtc_utils.encode_uds_dtcs(ecu_config.get_dtcs())
+        expected_response = get_positive_response_sid(READ_DTC_INFO) + bytes([READ_DTC_INFO_BY_STATUS_MASK]) + bytes(
+            [DTC_STATUS_AVAILABILITY_MASK]) + dtcs
         self.assertIsNotNone(response)
-        # self.assertEqual(2, len(response))
+        self.assertEqual(3 + len(dtcs), len(response))
+        self.assertEqual(expected_response.hex(), response.hex())
+
+    def test_process_service_0x19_with_unsupported_sub_function_returns_negative_response(self):
+        request = bytes([READ_DTC_INFO]) + bytes([0x03])
+        response = services.process_service_request(request)
+        expected_response = bytes([NEGATIVE_RESPONSE_ID]) + bytes([READ_DTC_INFO]) + bytes(
+            [NRC_SUB_FUNCTION_NOT_SUPPORTED])
+        self.assertIsNotNone(response)
+        self.assertEqual(3, len(response))
+        self.assertEqual(expected_response.hex(), response.hex())
+
+    def test_process_service_0x19_with_invalid_message_length_returns_negative_response(self):
+        expected_response = bytes([NEGATIVE_RESPONSE_ID]) + bytes([READ_DTC_INFO]) + bytes(
+            [NRC_INCORRECT_MESSAGE_LENGTH_OR_INVALID_FORMAT])
+
+        request = bytes([READ_DTC_INFO])
+        response = services.process_service_request(request)
+        self.assertIsNotNone(response)
+        self.assertEqual(3, len(response))
+        self.assertEqual(expected_response.hex(), response.hex())
+
+        request = bytes([READ_DTC_INFO]) + bytes([READ_DTC_INFO_BY_STATUS_MASK]) + bytes([0x01])
+        response = services.process_service_request(request)
+        self.assertIsNotNone(response)
+        self.assertEqual(3, len(response))
         self.assertEqual(expected_response.hex(), response.hex())
 
 
