@@ -41,14 +41,14 @@ In both cases, only ISO-TP **normal addressing** (only CAN arbitration ID is use
 
 * Python3
 * [SocketCAN](https://www.kernel.org/doc/Documentation/networking/can.txt) Implementation of the CAN protocol. This kernel module is part of Linux. 
-* [ISO-TP kernel module](https://github.com/hartkopp/can-isotp) It is NOT part of linux. It needs to be loaded before running the ecu-simulator.
-* [isotp](https://can-isotp.readthedocs.io/en/latest/) The ecu-simulator only uses [isotp.socket](https://can-isotp.readthedocs.io/en/latest/isotp/socket.html), which is a wrapper for the ISO-TP kernel module.
+* [ISO-TP kernel module](https://github.com/hartkopp/can-isotp) It is NOT part of linux. It needs to be loaded before running the `ecu-simulator`.
+* [isotp](https://can-isotp.readthedocs.io/en/latest/) The `ecu-simulator` only uses [isotp.socket](https://can-isotp.readthedocs.io/en/latest/isotp/socket.html), which is a wrapper for the ISO-TP kernel module.
 
 ## Test Environment  
 
 ## Usage 
 
-The ecu-simulator try to set up the CAN interface and load the ISO-TP linux kernel module (you need to configure `can_interface`, `can_interface_type`, `can_bitrate`, and `isotp_ko_file_path` in `ecu_config.json`). To perform this task, the tool must be started with root privileges:   
+The `ecu-simulator` try to set up the CAN interface and load the ISO-TP linux kernel module (you need to configure `can_interface`, `can_interface_type`, `can_bitrate`, and `isotp_ko_file_path` in `ecu_config.json`). To perform this task, the tool must be started with root privileges:   
 
 ```
 sudo python3 ecu-simulator.py
@@ -66,7 +66,9 @@ sudo sh vcan_setup.sh
 # and then start the tool without sudo
 python3 ecu-simulator.py
 ``` 
+## Contact
 
+lbenthins@gmail.com 
 
 
 
