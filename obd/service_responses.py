@@ -1,5 +1,6 @@
 import random
 import ecu_config_reader
+import dtc_utils
 
 
 DEFAULT_ECU_NAME = "ECU_SIMULATOR"
@@ -25,12 +26,6 @@ VEHICLE_SPEED_ACCELERATION = 1
 ENGINE_TEMP_MIN = 130  # 90 C - 40
 
 ENGINE_TEMP_MAX = 150  # 110 C - 40
-
-DTC_GROUP = {"P": "00", "C": "01", "B": "10", "U": "11"}
-
-DTC_TYPE = {"0": "00", "1": "01", "2": "10", "3": "11"}
-
-DTC_LENGTH = 5
 
 MAX_NUMBER_OF_DTCS_IN_RESPONSE = 255
 
@@ -109,10 +104,7 @@ def add_ecu_name_padding(ecu_name):
 
 def get_dtcs():
     dtcs = ecu_config_reader.get_dtcs()
-    dtcs_bytes = bytearray()
-    for dtc in dtcs:
-        if is_dtc_valid(dtc):
-            dtcs_bytes += get_dtc_first_byte(dtc) + get_dtc_second_byte(dtc)
+    dtcs_bytes = dtc_utils.encode_obd_dtcs(dtcs)
     return add_number_of_dtcs_to_response(dtcs_bytes)
 
 
@@ -121,26 +113,3 @@ def add_number_of_dtcs_to_response(dtcs_bytes):
     if MAX_NUMBER_OF_DTCS_IN_RESPONSE >= number_of_dtcs > 0:
         return int(number_of_dtcs).to_bytes(1, BIG_ENDIAN) + dtcs_bytes
     return bytes(1)
-
-
-def is_dtc_valid(dtc):
-    return len(dtc) == DTC_LENGTH and DTC_GROUP.get(dtc[0]) is not None and DTC_TYPE.get(dtc[1]) is not None \
-           and is_hex_value(dtc[2]) and is_hex_value(dtc[3]) and is_hex_value(dtc[4])
-
-
-def is_hex_value(value):
-    try:
-        int(value, 16)
-        return True
-    except ValueError:
-        return False
-
-
-def get_dtc_first_byte(dtc):
-    bits_0_3 = int(DTC_GROUP.get(dtc[0]) + DTC_TYPE.get(dtc[1]) + "0000", 2)
-    bits_4_7 = int("0000" + dtc[2], 16)
-    return (bits_0_3 | bits_4_7).to_bytes(1, BIG_ENDIAN)
-
-
-def get_dtc_second_byte(dtc):
-    return int((dtc[3] + dtc[4]), 16).to_bytes(1, BIG_ENDIAN)

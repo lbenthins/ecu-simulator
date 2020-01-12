@@ -27,16 +27,20 @@ def get_dtcs():
 
 
 def get_obd_broadcast_address():
-    try:
-        return int(CONFIG["obd_broadcast_address"].get("value"), 16)
-    except ValueError as error:
-        print(error)
-        exit(1)
+    return create_address(CONFIG["obd_broadcast_address"].get("value"))
 
 
 def get_obd_ecu_address():
+    return create_address(CONFIG["obd_ecu_address"].get("value"))
+
+
+def get_uds_ecu_address():
+    return create_address(CONFIG["uds_ecu_address"].get("value"))
+
+
+def create_address(address):
     try:
-        return int(CONFIG["obd_ecu_address"].get("value"), 16)
+        return int(address, 16)
     except ValueError as error:
         print(error)
         exit(1)
@@ -56,3 +60,6 @@ def get_can_bitrate():
 
 def get_isotp_ko_file_path():
     return CONFIG["isotp_ko_file_path"].get("value")
+
+
+

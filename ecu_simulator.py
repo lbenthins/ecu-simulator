@@ -2,6 +2,7 @@ import sys
 from threading import Thread
 import os
 import obd_listener
+import uds_listener
 import ecu_config_reader as ecu_config
 
 VCAN_SETUP_FILE = "vcan_setup.sh"
@@ -12,6 +13,7 @@ CAN_SETUP_FILE = "can_setup.sh"
 def main():
     set_up_can_interface()
     start_obd_listener_thread()
+    start_uds_listener_thread()
 
 
 def set_up_can_interface():
@@ -27,6 +29,10 @@ def set_up_can_interface():
 
 def start_obd_listener_thread():
     Thread(target=obd_listener.start).start()
+
+
+def start_uds_listener_thread():
+    Thread(target=uds_listener.start).start()
 
 
 if __name__ == '__main__':
