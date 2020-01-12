@@ -26,8 +26,13 @@ I created this project to learn more about the OBD and UDS protocols. I did my b
 
 | Service |          Description                                   |
 |:-------:|:-------------------------------------------------------|
-| 0x10    | ECUReset. Reset types: 0x01, 0x02, 0x03, 0x04 and 0x05 |
-
+| 0x10    | ECUReset.  |
+|         | Supported sub-functions (reset types): 0x01, 0x02, 0x03, 0x04 and 0x05 |
+| 0x19    | ReadDTCInformation|
+|         | Supported sub-functions: 0x02 (reportDTCByStatusMask) |
+|         | Default DTCStatusAvailabilityMask: 0XFF | 
+|         | Default statusOfDTC: 
+ 
 ## Addressing
 
 **OBD:** Functional. See options `obd_broadcast_address` and `obd_ecu_address` in `ecu_config.json`.
