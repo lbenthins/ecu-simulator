@@ -67,13 +67,13 @@ python3 ecu_simulator.py
 
 ## Test Environment  
 
-The `ecu-simulator` was tested on a Raspberry Pi (Raspbian, Linux Kernel 4.19) with PiCAN and [SBC-CAN01](anleitung.joy-it.net/wp-content/uploads/2018/09/SBC-CAN01-Anschlussplan.pdf) (pic below) as CAN-Bus board. 
+The `ecu-simulator` was tested on a Raspberry Pi (Raspbian, Linux Kernel 4.19) with PiCAN and [SBC-CAN01](http://www.anleitung.joy-it.net/wp-content/uploads/2018/09/SBC-CAN01-Anschlussplan.pdf) (see pic below) as CAN-Bus board. 
 
 ### OBD-II
 
 The OBD-II services were tested using a real OBD-II scanner.
 
-<img src="https://github.com/lbenthins/ecu-simulator/blob/master/img/obd_sbc-can01.jpg" alt="OBD-II test env"/>
+<img src="https://github.com/lbenthins/ecu-simulator/blob/master/img/obd_sbc-can01.jpg" alt="OBD-II test - SBC-CAN01"/>
 
 <img src="https://github.com/lbenthins/ecu-simulator/blob/master/img/obd_detecting.jpg" alt="OBD-II test env" width="407" height="314"/>
 
