@@ -5,7 +5,7 @@ import datetime
 
 LOG_FILE_NAME_FORMAT = 'can_%y%m%d%H%M%S.log'
 
-MAX_LOG_FILE_SIZE = 2500000
+MAX_LOG_FILE_SIZE = 1500000  # bytes
 
 CAN_INTERFACE = ecu_config_reader.get_can_interface()
 
