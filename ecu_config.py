@@ -26,10 +26,6 @@ def get_dtcs():
     return CONFIG["dtcs"].get("value")
 
 
-def get_ecu_addresses():
-    return [get_obd_broadcast_address(), get_obd_ecu_address(), get_uds_ecu_address()]
-
-
 def get_obd_broadcast_address():
     return create_address(CONFIG["obd_broadcast_address"].get("value"))
 

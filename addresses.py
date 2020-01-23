@@ -1,0 +1,15 @@
+import ecu_config
+
+OBD_BROADCAST_ADDRESS = ecu_config.get_obd_broadcast_address()
+
+OBD_ECU_ADDRESS = ecu_config.get_obd_ecu_address()
+
+OBD_TARGET_ADDRESS = OBD_ECU_ADDRESS + 8
+
+UDS_ECU_ADDRESS = ecu_config.get_uds_ecu_address()
+
+UDS_TARGET_ADDRESS = UDS_ECU_ADDRESS + 8
+
+ECU_ADDRESSES = [OBD_BROADCAST_ADDRESS, OBD_ECU_ADDRESS, UDS_ECU_ADDRESS]
+
+TARGET_ADDRESSES = [OBD_TARGET_ADDRESS, UDS_TARGET_ADDRESS]

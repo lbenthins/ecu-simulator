@@ -1,16 +1,13 @@
 import isotp
 import ecu_config
 from uds import services
+from addresses import UDS_ECU_ADDRESS, UDS_TARGET_ADDRESS
 
 CAN_INTERFACE = ecu_config.get_can_interface()
 
-ECU_ADDRESS = ecu_config.get_uds_ecu_address()
-
-TARGET_ADDRESS = ECU_ADDRESS + 8
-
 
 def start():
-    isotp_socket = create_isotp_socket(ECU_ADDRESS, TARGET_ADDRESS)
+    isotp_socket = create_isotp_socket(UDS_ECU_ADDRESS, UDS_TARGET_ADDRESS)
     while True:
         request = isotp_socket.recv()
         if request is not None:

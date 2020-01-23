@@ -2,8 +2,9 @@ import can
 import ecu_config
 import os
 import datetime
+from addresses import ECU_ADDRESSES, TARGET_ADDRESSES
 
-LOG_FILE_NAME_FORMAT = 'can_%y%m%d%H%M%S.log'
+LOG_FILE_NAME_FORMAT = "can_%y%m%d%H%M%S.log"
 
 MAX_LOG_FILE_SIZE = 1500000  # bytes
 
@@ -32,11 +33,10 @@ def get_filters():
 
 
 def get_can_ids():
-    ecu_can_ids = ecu_config.get_ecu_addresses()
-    tester_can_ids = []
-    for ecu_can_id in ecu_can_ids:
-        tester_can_ids.append(ecu_can_id+8)
-    return ecu_can_ids + tester_can_ids
+    can_ids = []
+    can_ids.extend(ECU_ADDRESSES)
+    can_ids.extend(TARGET_ADDRESSES)
+    return can_ids
 
 
 def create_new_file_path_if_size_exceeded(file_path):

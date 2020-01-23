@@ -1,19 +1,13 @@
 import isotp
 import ecu_config
 from obd import services
+from addresses import OBD_BROADCAST_ADDRESS, OBD_ECU_ADDRESS, OBD_TARGET_ADDRESS
 
 CAN_INTERFACE = ecu_config.get_can_interface()
 
-BROADCAST_ADDRESS = ecu_config.get_obd_broadcast_address()
-
-ECU_ADDRESS = ecu_config.get_obd_ecu_address()
-
-TARGET_ADDRESS = ECU_ADDRESS + 8
-
-
 def start():
-    request_socket = create_isotp_socket(BROADCAST_ADDRESS, TARGET_ADDRESS)
-    response_socket = create_isotp_socket(ECU_ADDRESS, TARGET_ADDRESS)
+    request_socket = create_isotp_socket(OBD_BROADCAST_ADDRESS, OBD_TARGET_ADDRESS)
+    response_socket = create_isotp_socket(OBD_ECU_ADDRESS, OBD_TARGET_ADDRESS)
     while True:
         request = request_socket.recv()
         requested_pid, requested_sid = get_sid_and_pid(request)

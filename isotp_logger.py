@@ -2,11 +2,11 @@ import os
 import isotp
 import time
 import datetime
-import obd_listener
-import uds_listener
 import ecu_config
+from addresses import UDS_ECU_ADDRESS, UDS_TARGET_ADDRESS
+from addresses import OBD_BROADCAST_ADDRESS, OBD_ECU_ADDRESS, OBD_TARGET_ADDRESS
 
-LOG_FILE_NAME_FORMAT = 'isotp_%y%m%d%H%M%S.log'
+LOG_FILE_NAME_FORMAT = "isotp_%y%m%d%H%M%S.log"
 
 MAX_LOG_FILE_SIZE = 1500000  # bytes
 
@@ -14,14 +14,14 @@ CAN_INTERFACE = ecu_config.get_can_interface()
 
 
 def start():
-    uds_socket_req = create_socket(rxid=uds_listener.ECU_ADDRESS, txid=uds_listener.TARGET_ADDRESS)
-    uds_socket_res = create_socket(rxid=uds_listener.TARGET_ADDRESS, txid=uds_listener.ECU_ADDRESS)
+    uds_socket_req = create_socket(rxid=UDS_ECU_ADDRESS, txid=UDS_TARGET_ADDRESS)
+    uds_socket_res = create_socket(rxid=UDS_TARGET_ADDRESS, txid=UDS_ECU_ADDRESS)
 
-    obd_broadcast_socket_req = create_socket(rxid=obd_listener.BROADCAST_ADDRESS, txid=obd_listener.TARGET_ADDRESS)
-    obd_broadcast_socket_res = create_socket(rxid=obd_listener.TARGET_ADDRESS, txid=obd_listener.BROADCAST_ADDRESS)
+    obd_broadcast_socket_req = create_socket(rxid=OBD_BROADCAST_ADDRESS, txid=OBD_TARGET_ADDRESS)
+    obd_broadcast_socket_res = create_socket(rxid=OBD_TARGET_ADDRESS, txid=OBD_BROADCAST_ADDRESS)
 
-    obd_socket_req = create_socket(rxid=obd_listener.ECU_ADDRESS, txid=obd_listener.TARGET_ADDRESS)
-    obd_socket_res = create_socket(rxid=obd_listener.TARGET_ADDRESS, txid=obd_listener.ECU_ADDRESS)
+    obd_socket_req = create_socket(rxid=OBD_ECU_ADDRESS, txid=OBD_TARGET_ADDRESS)
+    obd_socket_res = create_socket(rxid=OBD_TARGET_ADDRESS, txid=OBD_ECU_ADDRESS)
 
     log_file_path = create_file_path()
 
