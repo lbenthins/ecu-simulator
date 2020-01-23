@@ -4,6 +4,7 @@ import os
 import obd_listener
 import uds_listener
 import can_logger
+import isotp_logger
 import ecu_config_reader as ecu_config
 
 
@@ -14,7 +15,8 @@ CAN_SETUP_FILE = "can_setup.sh"
 
 def main():
     set_up_can_interface()
-    star_can_loger_thread()
+    star_can_logger_thread()
+    star_isotp_logger_thread()
     start_obd_listener_thread()
     start_uds_listener_thread()
 
@@ -30,8 +32,12 @@ def set_up_can_interface():
         os.system("sh " + CAN_SETUP_FILE + " " + can_interface + " " + can_bitrate + " " + isotp_ko_file_path)
 
 
-def star_can_loger_thread():
+def star_can_logger_thread():
     Thread(target=can_logger.start).start()
+
+
+def star_isotp_logger_thread():
+    Thread(target=isotp_logger.start).start()
 
 
 def start_obd_listener_thread():
