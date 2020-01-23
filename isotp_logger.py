@@ -12,19 +12,13 @@ def start():
     uds_socket_req = create_socket(rxid=UDS_ECU_ADDRESS, txid=UDS_TARGET_ADDRESS)
     uds_socket_res = create_socket(rxid=UDS_TARGET_ADDRESS, txid=UDS_ECU_ADDRESS)
 
-    obd_broadcast_socket_req = create_socket(rxid=OBD_BROADCAST_ADDRESS, txid=OBD_TARGET_ADDRESS)
-    obd_broadcast_socket_res = create_socket(rxid=OBD_TARGET_ADDRESS, txid=OBD_BROADCAST_ADDRESS)
-
-    obd_socket_req = create_socket(rxid=OBD_ECU_ADDRESS, txid=OBD_TARGET_ADDRESS)
+    obd_socket_req = create_socket(rxid=OBD_BROADCAST_ADDRESS, txid=OBD_TARGET_ADDRESS)
     obd_socket_res = create_socket(rxid=OBD_TARGET_ADDRESS, txid=OBD_ECU_ADDRESS)
 
     file_path = logger_utils.create_file_path(LOG_TYPE)
     while True:
         uds_request = uds_socket_req.recv()
         uds_response = uds_socket_res.recv()
-
-        obd_broadcast_request = obd_broadcast_socket_req.recv()
-        obd_broadcast_response = obd_broadcast_socket_res.recv()
 
         obd_request = obd_socket_req.recv()
         obd_response = obd_socket_res.recv()
@@ -33,12 +27,8 @@ def start():
             write_to_log(file_path, uds_request, UDS_ECU_ADDRESS)
         if uds_response is not None:
             write_to_log(file_path, uds_response, UDS_TARGET_ADDRESS)
-        if obd_broadcast_request is not None:
-            write_to_log(file_path, obd_broadcast_request, OBD_BROADCAST_ADDRESS)
-        if obd_broadcast_response is not None:
-            write_to_log(file_path, obd_broadcast_response, OBD_TARGET_ADDRESS)
         if obd_request is not None:
-            write_to_log(file_path, obd_request, OBD_ECU_ADDRESS)
+            write_to_log(file_path, obd_request, OBD_BROADCAST_ADDRESS)
         if obd_response is not None:
             write_to_log(file_path, obd_response, OBD_TARGET_ADDRESS)
 
