@@ -1,16 +1,11 @@
-import os
 import isotp
 import time
-import datetime
-import ecu_config
+import logger_utils
+from logger_utils import CAN_INTERFACE
 from addresses import UDS_ECU_ADDRESS, UDS_TARGET_ADDRESS
 from addresses import OBD_BROADCAST_ADDRESS, OBD_ECU_ADDRESS, OBD_TARGET_ADDRESS
 
-LOG_FILE_NAME_FORMAT = "isotp_%y%m%d%H%M%S.log"
-
-MAX_LOG_FILE_SIZE = 1500000  # bytes
-
-CAN_INTERFACE = ecu_config.get_can_interface()
+LOG_TYPE = "isotp"
 
 
 def start():
@@ -23,50 +18,29 @@ def start():
     obd_socket_req = create_socket(rxid=OBD_ECU_ADDRESS, txid=OBD_TARGET_ADDRESS)
     obd_socket_res = create_socket(rxid=OBD_TARGET_ADDRESS, txid=OBD_ECU_ADDRESS)
 
-    log_file_path = create_file_path()
-
+    file_path = logger_utils.create_file_path(LOG_TYPE)
     while True:
-        uds_msg_req = uds_socket_req.recv()
-        uds_msg_res = uds_socket_res.recv()
+        uds_request = uds_socket_req.recv()
+        uds_response = uds_socket_res.recv()
 
-        obd_broadcast_msg_req = obd_broadcast_socket_req.recv()
-        obd_broadcast_msg_res = obd_broadcast_socket_res.recv()
+        obd_broadcast_request = obd_broadcast_socket_req.recv()
+        obd_broadcast_response = obd_broadcast_socket_res.recv()
 
-        obd_msg_req = obd_socket_req.recv()
-        obd_msg_res = obd_socket_res.recv()
+        obd_request = obd_socket_req.recv()
+        obd_response = obd_socket_res.recv()
 
-        if uds_msg_req is not None:
-            write_to_log(log_file_path, uds_msg_req, uds_socket_req.address.rxid)
-        if uds_msg_res is not None:
-            write_to_log(log_file_path, uds_msg_res, uds_socket_res.address.rxid)
-        if obd_broadcast_msg_req is not None:
-            write_to_log(log_file_path, obd_broadcast_msg_req, obd_broadcast_socket_req.address.rxid)
-        if obd_broadcast_msg_res is not None:
-            write_to_log(log_file_path, obd_broadcast_msg_res, obd_broadcast_socket_res.address.rxid)
-        if obd_msg_req is not None:
-            write_to_log(log_file_path, obd_msg_req, obd_socket_req.address.rxid)
-        if obd_msg_res is not None:
-            write_to_log(log_file_path, obd_msg_res, obd_socket_res.address.rxid)
-
-
-def write_to_log(log_file_path, msg, address):
-    log_file_path = create_new_file_path_if_size_exceeded(log_file_path)
-    log_file = open(log_file_path, "a")
-    log_file.write(
-        "(" + "{0:.6f}".format(time.time()) + ") " + CAN_INTERFACE + " " + hex(
-            address).upper() + "#" + msg.hex().upper() + "\n")
-    log_file.close()
-
-
-def log(log_file_path, socket):
-    while True:
-        msg = socket.recv()
-        if msg is not None:
-            log_file_path = create_new_file_path_if_size_exceeded(log_file_path)
-            log_file = open(log_file_path, "a")
-            log_file.write(
-                "(" + "{0:.6f}".format(time.time()) + ") " + CAN_INTERFACE + " " + hex(socket.address.rxid).upper() + "#" + msg.hex().upper() + "\n")
-            log_file.close()
+        if uds_request is not None:
+            write_to_log(file_path, uds_request, UDS_ECU_ADDRESS)
+        if uds_response is not None:
+            write_to_log(file_path, uds_response, UDS_TARGET_ADDRESS)
+        if obd_broadcast_request is not None:
+            write_to_log(file_path, obd_broadcast_request, OBD_BROADCAST_ADDRESS)
+        if obd_broadcast_response is not None:
+            write_to_log(file_path, obd_broadcast_response, OBD_TARGET_ADDRESS)
+        if obd_request is not None:
+            write_to_log(file_path, obd_request, OBD_ECU_ADDRESS)
+        if obd_response is not None:
+            write_to_log(file_path, obd_response, OBD_TARGET_ADDRESS)
 
 
 def create_socket(rxid, txid):
@@ -76,12 +50,24 @@ def create_socket(rxid, txid):
     return socket
 
 
-def create_new_file_path_if_size_exceeded(file_path):
-    if os.path.exists(file_path):
-        if os.path.getsize(file_path) > MAX_LOG_FILE_SIZE:
-            file_path = create_file_path()
-    return file_path
+def write_to_log(file_path, message, address):
+    file_path = logger_utils.create_new_file_path_if_size_exceeded(file_path, LOG_TYPE)
+    log_file = open(file_path, "a")
+    log_file.write(create_log(address, message))
+    log_file.close()
 
 
-def create_file_path():
-    return os.path.join(os.path.dirname(__file__), datetime.datetime.now().strftime(LOG_FILE_NAME_FORMAT))
+def create_log(address, message):
+    return get_time() + " " + CAN_INTERFACE + " " + format_address(address) + "#" + format_msg(message) + "\n"
+
+
+def get_time():
+    return "(" + "{0:.6f}".format(time.time()) + ")"
+
+
+def format_address(address):
+    return hex(address).lstrip("0x").upper()
+
+
+def format_msg(message):
+    return message.hex().upper()
