@@ -1,5 +1,5 @@
 import isotp
-import ecu_config_reader as ecu_config
+import ecu_config
 from obd import services
 
 CAN_INTERFACE = ecu_config.get_can_interface()

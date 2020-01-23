@@ -4,13 +4,13 @@ import time
 import datetime
 import obd_listener
 import uds_listener
-import ecu_config_reader
+import ecu_config
 
 LOG_FILE_NAME_FORMAT = 'isotp_%y%m%d%H%M%S.log'
 
 MAX_LOG_FILE_SIZE = 1500000  # bytes
 
-CAN_INTERFACE = ecu_config_reader.get_can_interface()
+CAN_INTERFACE = ecu_config.get_can_interface()
 
 
 def start():

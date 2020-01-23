@@ -5,7 +5,7 @@ import obd_listener
 import uds_listener
 import can_logger
 import isotp_logger
-import ecu_config_reader as ecu_config
+import ecu_config
 
 
 VCAN_SETUP_FILE = "vcan_setup.sh"

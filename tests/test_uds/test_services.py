@@ -1,6 +1,6 @@
 import unittest
 from uds import services
-import ecu_config_reader as ecu_config
+import ecu_config as ecu_config
 import dtc_utils
 
 ECU_RESET = 0x11

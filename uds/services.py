@@ -1,5 +1,5 @@
 import dtc_utils
-import ecu_config_reader as ecu_config
+import ecu_config as ecu_config
 
 READ_DTC_INFO_BY_STATUS_MASK = 0x2
 
