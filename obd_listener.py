@@ -2,8 +2,10 @@ import isotp
 import ecu_config
 from obd import services
 from addresses import OBD_BROADCAST_ADDRESS, OBD_ECU_ADDRESS, OBD_TARGET_ADDRESS
+from ecu_simulator_logger import logger
 
 CAN_INTERFACE = ecu_config.get_can_interface()
+
 
 def start():
     request_socket = create_isotp_socket(OBD_BROADCAST_ADDRESS, OBD_TARGET_ADDRESS)
@@ -12,10 +14,10 @@ def start():
         request = request_socket.recv()
         requested_pid, requested_sid = get_sid_and_pid(request)
         if requested_sid is not None:
-            print("Request: " + request.hex())
+            log_request(request)
             response = services.process_service_request(requested_sid, requested_pid)
             if response is not None:
-                print("Response: " + response.hex())
+                log_response(response)
                 response_socket.send(response)
 
 
@@ -34,3 +36,12 @@ def get_sid_and_pid(request):
         if request_bytes_length >= 2:
             pid = request[1]
     return pid, sid
+
+
+def log_request(request):
+    logger.info("Receiving on " + hex(OBD_BROADCAST_ADDRESS) + " from " + hex(OBD_TARGET_ADDRESS)
+                + " Request: " + request.hex().upper())
+
+
+def log_response(response):
+    logger.info("Sending to " + hex(OBD_TARGET_ADDRESS) + " Response: " + response.hex().upper())

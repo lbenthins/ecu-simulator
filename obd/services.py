@@ -1,4 +1,5 @@
 from obd import service_responses as responses
+from ecu_simulator_logger import logger
 
 SUPPORTED_PIDS_RESPONSE_MASK = 0x80000000
 
@@ -45,7 +46,9 @@ def process_service_request(requested_sid, requested_pid):
                 return add_response_prefix(requested_sid, requested_pid, response)
             return add_response_prefix(requested_sid, requested_pid, get_pid_response(requested_pid, service_pids))
         return add_response_prefix(requested_sid, requested_pid, service_response)
-    return None
+    else:
+        logger.warning("Invalid request")
+        return None
 
 
 def add_response_prefix(requested_sid, requested_pid, response):
@@ -73,14 +76,18 @@ def is_pid_valid(pid):
 def get_service(requested_sid):
     for service in SERVICES:
         if service.get("id") == requested_sid:
+            logger.info("Requested Service " + hex(requested_sid) + ": " + service.get("description"))
             return service.get("response")(), service.get("pids")
+    logger.warning("Requested service " + hex(requested_sid) + " not supported")
     return None, None
 
 
 def get_pid_response(requested_pid, pids):
     for pid in pids:
         if pid.get("id") == requested_pid:
+            logger.info("Requested PID " + hex(requested_pid) + ": " + pid.get("description"))
             return pid.get("response")()
+    logger.warning("Requested PID " + hex(requested_pid) + " not supported")
     return None
 
 
