@@ -1,6 +1,5 @@
 import logging
 from logging import handlers
-import logger_utils
 from logger_utils import MAX_LOG_FILE_SIZE
 
 LOGGER_NAME = 'ecu_simulator'
@@ -8,6 +7,8 @@ LOGGER_NAME = 'ecu_simulator'
 LOGGER_FORMAT = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 
 logger = logging.getLogger(LOGGER_NAME)
+
+LOG_FILE_NAME = LOGGER_NAME + ".log"
 
 
 def configure():
@@ -18,7 +19,7 @@ def configure():
 
 
 def __add_file_handler(formatter):
-    fh = handlers.RotatingFileHandler(logger_utils.create_file_path(LOGGER_NAME), maxBytes=MAX_LOG_FILE_SIZE)
+    fh = handlers.RotatingFileHandler(LOG_FILE_NAME, maxBytes=MAX_LOG_FILE_SIZE, backupCount=5)
     fh.setLevel(logging.DEBUG)
     fh.setFormatter(formatter)
     logger.addHandler(fh)

@@ -76,9 +76,9 @@ def is_pid_valid(pid):
 def get_service(requested_sid):
     for service in SERVICES:
         if service.get("id") == requested_sid:
-            logger.info("Requested Service " + hex(requested_sid) + ": " + service.get("description"))
+            logger.info("Requested OBD SID " + hex(requested_sid) + ": " + service.get("description"))
             return service.get("response")(), service.get("pids")
-    logger.warning("Requested service " + hex(requested_sid) + " not supported")
+    logger.warning("Requested SID " + hex(requested_sid) + " not supported")
     return None, None
 
 

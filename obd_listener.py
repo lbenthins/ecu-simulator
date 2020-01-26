@@ -39,9 +39,9 @@ def get_sid_and_pid(request):
 
 
 def log_request(request):
-    logger.info("Receiving on " + hex(OBD_BROADCAST_ADDRESS) + " from " + hex(OBD_TARGET_ADDRESS)
-                + " Request: " + request.hex().upper())
+    logger.info("Receiving on OBD address " + hex(OBD_BROADCAST_ADDRESS) + " from " + hex(OBD_TARGET_ADDRESS)
+                + " Request: 0x" + request.hex())
 
 
 def log_response(response):
-    logger.info("Sending to " + hex(OBD_TARGET_ADDRESS) + " Response: " + response.hex().upper())
+    logger.info("Sending to " + hex(OBD_TARGET_ADDRESS) + " Response: 0x" + response.hex())
