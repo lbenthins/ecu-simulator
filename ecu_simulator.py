@@ -12,7 +12,7 @@ SETUP_CAN_FILE = "setup_can.sh"
 
 
 def main():
-    logger_app.logger.configure()
+    logger_app.configure()
     logger_app.logger.info("Starting ECU-Simulator")
     set_up_can_interface()
     star_can_logger_thread()
