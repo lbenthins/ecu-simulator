@@ -1,21 +1,20 @@
+import os
 import sys
 from threading import Thread
-import os
-import obd_listener
-import uds_listener
-import can_logger
-import isotp_logger
 import ecu_config
-import ecu_simulator_logger as logging
+from obd import listener as obd_listener
+from uds import listener as uds_listener
+from loggers.logger_app import logger
+from loggers import logger_can, logger_isotp
 
-VCAN_SETUP_FILE = "vcan_setup.sh"
+SETUP_VCAN_FILE = "setup_vcan.sh"
 
-CAN_SETUP_FILE = "can_setup.sh"
+SETUP_CAN_FILE = "setup_can.sh"
 
 
 def main():
-    logging.configure()
-    logging.logger.info("Starting ECU-Simulator")
+    logger.configure()
+    logger.info("Starting ECU-Simulator")
     set_up_can_interface()
     star_can_logger_thread()
     star_isotp_logger_thread()
@@ -28,20 +27,20 @@ def set_up_can_interface():
     can_interface = ecu_config.get_can_interface()
     isotp_ko_file_path = ecu_config.get_isotp_ko_file_path()
     if interface_type == "virtual":
-        logging.logger.info("Setting up virtual CAN interface: " + can_interface)
-        os.system("sh " + VCAN_SETUP_FILE + " " + can_interface + " " + isotp_ko_file_path)
+        logger.info("Setting up virtual CAN interface: " + can_interface)
+        os.system("sh " + SETUP_VCAN_FILE + " " + can_interface + " " + isotp_ko_file_path)
     elif interface_type == "hardware":
-        logging.logger.info("Setting up CAN interface: " + can_interface)
-        logging.logger.info("Loading ISO-TP module from: " + isotp_ko_file_path)
-        os.system("sh " + CAN_SETUP_FILE + " " + can_interface + " " + ecu_config.get_can_bitrate() + " " + isotp_ko_file_path)
+        logger.info("Setting up CAN interface: " + can_interface)
+        logger.info("Loading ISO-TP module from: " + isotp_ko_file_path)
+        os.system("sh " + SETUP_CAN_FILE + " " + can_interface + " " + ecu_config.get_can_bitrate() + " " + isotp_ko_file_path)
 
 
 def star_can_logger_thread():
-    Thread(target=can_logger.start).start()
+    Thread(target=logger_can.start).start()
 
 
 def star_isotp_logger_thread():
-    Thread(target=isotp_logger.start).start()
+    Thread(target=logger_isotp.start).start()
 
 
 def start_obd_listener_thread():

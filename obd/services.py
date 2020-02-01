@@ -1,5 +1,5 @@
-from obd import service_responses as responses
-from ecu_simulator_logger import logger
+from obd import responses
+from loggers.logger_app import logger
 
 SUPPORTED_PIDS_RESPONSE_MASK = 0x80000000
 

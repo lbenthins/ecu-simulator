@@ -56,10 +56,10 @@ If you do not want to start the tool with root privileges, you can do the follow
 
 ```
 # set up CAN hardware interface
-sudo sh can_setup.sh <CAN interface e.g., can0> <CAN bitrate e.g., 500000> <can-isotp.ko file pyth e.g., /lib/modules/4.19.75-v7+/kernel/net/can/can-isotp.ko>
+sudo sh setup_can.sh <CAN interface e.g., can0> <CAN bitrate e.g., 500000> <can-isotp.ko file pyth e.g., /lib/modules/4.19.75-v7+/kernel/net/can/can-isotp.ko>
 
 # or set up CAN virtual interface 
-sudo sh vcan_setup.sh <virtual CAN interface e.g., vcan0> <can-isotp.ko file pyth e.g., /lib/modules/4.19.75-v7+/kernel/net/can/can-isotp.ko>
+sudo sh setup_vcan.sh <virtual CAN interface e.g., vcan0> <can-isotp.ko file pyth e.g., /lib/modules/4.19.75-v7+/kernel/net/can/can-isotp.ko>
 
 # and then start the tool without sudo
 python3 ecu_simulator.py

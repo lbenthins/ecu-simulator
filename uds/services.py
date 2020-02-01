@@ -1,6 +1,6 @@
 import dtc_utils
 import ecu_config as ecu_config
-from ecu_simulator_logger import logger
+from loggers.logger_app import logger
 
 READ_DTC_INFO_BY_STATUS_MASK = 0x2
 

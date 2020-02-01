@@ -1,6 +1,6 @@
 import logging
 from logging import handlers
-from logger_utils import MAX_LOG_FILE_SIZE
+from loggers.logger_utils import MAX_LOG_FILE_SIZE
 
 LOGGER_NAME = 'ecu_simulator'
 

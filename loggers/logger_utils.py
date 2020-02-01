@@ -17,4 +17,4 @@ def create_new_file_path_if_size_exceeded(file_path, log_type):
 
 
 def create_file_path(log_type):
-    return os.path.join(os.path.dirname(__file__), datetime.datetime.now().strftime(log_type + LOG_FILE_NAME_FORMAT))
+    return os.path.join(os.path.dirname("ecu_simulator"), datetime.datetime.now().strftime(log_type + LOG_FILE_NAME_FORMAT))

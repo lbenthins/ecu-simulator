@@ -1,5 +1,5 @@
 import can
-import logger_utils
+from loggers import logger_utils
 from addresses import ECU_ADDRESSES, TARGET_ADDRESSES
 
 LOG_TYPE = "can"
@@ -20,8 +20,7 @@ def start():
 
 
 def create_can_bus():
-    bus = can.interface.Bus(channel=logger_utils.CAN_INTERFACE, bustype=BUS_TYPE, can_filters=get_filters())
-    return bus
+    return can.interface.Bus(channel=logger_utils.CAN_INTERFACE, bustype=BUS_TYPE, can_filters=get_filters())
 
 
 def get_filters():
