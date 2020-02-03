@@ -2,17 +2,19 @@ import logging
 from logging import handlers
 from loggers.logger_utils import MAX_LOG_FILE_SIZE
 
-LOGGER_NAME = 'ecu_simulator'
+LOGGER_NAME = "ecu_simulator"
 
-LOGGER_FORMAT = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+DATE_FORMAT = "%Y-%m-%dT%H:%M:%S"
 
-logger = logging.getLogger(LOGGER_NAME)
+LOGGER_FORMAT = "%(asctime)s.%(msecs)03d - %(name)s - %(levelname)s - %(message)s"
 
 LOG_FILE_NAME = LOGGER_NAME + ".log"
 
+logger = logging.getLogger(LOGGER_NAME)
+
 
 def configure():
-    formatter = logging.Formatter(LOGGER_FORMAT)
+    formatter = logging.Formatter(LOGGER_FORMAT, datefmt=DATE_FORMAT)
     __add_file_handler(formatter)
     __add_console_handler(formatter)
     logger.setLevel(logging.DEBUG)

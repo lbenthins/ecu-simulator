@@ -11,12 +11,11 @@ CAN_MASK = 0x7FF
 
 def start():
     bus = create_can_bus()
-    log_file = logger_utils.create_file_path(LOG_TYPE)
+    file_path = logger_utils.create_file_path(LOG_TYPE)
     while True:
-        log_file = logger_utils.create_new_file_path_if_size_exceeded(log_file, LOG_TYPE)
-        logger = can.Logger(log_file, append=True)
-        logger.on_message_received(bus.recv())
-        logger.stop()
+        file_path = logger_utils.create_new_file_path_if_size_exceeded(file_path, LOG_TYPE)
+        message = bus.recv()
+        logger_utils.write_to_file(file_path, message.timestamp, message.arbitration_id, message.data)
 
 
 def create_can_bus():
@@ -35,4 +34,3 @@ def get_can_ids():
     can_ids.extend(ECU_ADDRESSES)
     can_ids.extend(TARGET_ADDRESSES)
     return can_ids
-
