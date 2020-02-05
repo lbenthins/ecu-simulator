@@ -1,5 +1,6 @@
 import dtc_utils
-import ecu_config_reader as ecu_config
+import ecu_config as ecu_config
+from loggers.logger_app import logger
 
 READ_DTC_INFO_BY_STATUS_MASK = 0x2
 
@@ -34,8 +35,12 @@ def process_service_request(request):
         sid = request[0]
         for service in SERVICES:
             if service.get("id") == sid:
+                logger.info("Requested UDS SID " + hex(sid) + ": " + service.get("description"))
                 return service.get("response")(request)
-    return None
+        logger.warning("Requested SID " + hex(sid) + " not supported")
+    else:
+        logger.warning("Invalid request")
+        return None
 
 
 def get_0x11_response(request):
@@ -72,6 +77,7 @@ def get_positive_response(sid, sub_function):
 
 
 def get_negative_response(sid, nrc):
+    logger.warning("Negative response for SID " + hex(sid) + " will be sent")
     return bytes([NEGATIVE_RESPONSE_SID]) + bytes([sid]) + bytes([nrc])
 
 
