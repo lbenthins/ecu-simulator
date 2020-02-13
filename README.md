@@ -24,11 +24,11 @@ I created this project to learn more about the OBD and UDS protocols. I did my b
 
 ### UDS (ISO 14229)
 
-| Service |          Description                                   |
-|:-------:|:-------------------------------------------------------|
-| 0x10    | DiagnosticSessionControl <br> Supported sub-functions (session types): 0x01 (default), 0x02 (programming), 0x03 (extended), and 0x04 (safety) |
-| 0x11    | ECUReset <br> Supported sub-functions (reset types): 0x01 (hardReset), 0x02 (keyOffOnReset), 0x03 (softReset), 0x04 (enableRapidPowerShutDown), and 0x05 (disableRapidPowerShutDown) |
-| 0x19    | ReadDTCInformation <br> Supported sub-functions: 0x02 (reportDTCByStatusMask) <br> Default DTCStatusAvailabilityMask: 0XFF <br> Default statusOfDTC: 0x2F| 
+| Service ID |          Name            | Supported sub-functions | Default parameters (response) |
+|:----------:|:-------------------------|:------------------------|:-----------------|
+| 0x10       | DiagnosticSessionControl | **session types** <br> <br> 0x01 default <br> 0x02 programming <br> 0x03 extended <br> 0x04 safety | |
+| 0x11       | ECUReset                 | **reset types** <br> <br> 0x01 hardReset <br> 0x02 keyOffOnReset <br> 0x03 softReset <br> 0x04 enableRapidPowerShutDown <br> 0x05 disableRapidPowerShutDown | 0x0F powerDownTime |
+| 0x19       | ReadDTCInformation       | **report types** <br> <br> 0x02 reportDTCByStatusMask | <br> 0xFF DTCStatusAvailabilityMask <br> 0x2F statusOfDTC  | 
  
 ## Addressing
 
