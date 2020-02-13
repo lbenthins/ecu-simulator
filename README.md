@@ -27,7 +27,7 @@ I created this project to learn more about the OBD and UDS protocols. I did my b
 | Service |          Description                                   |
 |:-------:|:-------------------------------------------------------|
 | 0x10    | DiagnosticSessionControl <br> Supported sub-functions (session types): 0x01 (default), 0x02 (programming), 0x03 (extended), and 0x04 (safety) |
-| 0x11    | ECUReset <br> Supported sub-functions (reset types): 0x01, 0x02, 0x03, 0x04, and 0x05 |
+| 0x11    | ECUReset <br> Supported sub-functions (reset types): 0x01 (hardReset), 0x02 (keyOffOnReset), 0x03 (softReset), 0x04 (enableRapidPowerShutDown), and 0x05 (disableRapidPowerShutDown) |
 | 0x19    | ReadDTCInformation <br> Supported sub-functions: 0x02 (reportDTCByStatusMask) <br> Default DTCStatusAvailabilityMask: 0XFF <br> Default statusOfDTC: 0x2F| 
  
 ## Addressing
