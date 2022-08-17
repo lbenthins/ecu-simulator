@@ -34,7 +34,7 @@ I created this project to learn more about the OBD and UDS protocols. I did my b
 
 **OBD:** Functional and physical. See options `obd_broadcast_address` and `obd_ecu_address` in `ecu_config.json`.
 
-**UDS:** Physical. See option `obd_ecu_address` in `ecu_config.json`.
+**UDS:** Physical. See option `uds_ecu_address` in `ecu_config.json`.
 
 In both cases, only ISO-TP **normal addressing** (only CAN arbitration ID is used) is supported.
 
