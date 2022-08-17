@@ -1,5 +1,5 @@
 modprobe can
-dmesg | grep -i vcan
+dmesg | grep -i can
 /sbin/ip link set $1 up type can bitrate $2
 ifconfig | grep $1
 insmod $3
