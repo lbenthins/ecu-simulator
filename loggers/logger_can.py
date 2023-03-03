@@ -4,7 +4,7 @@ from addresses import ECU_ADDRESSES, TARGET_ADDRESSES
 
 LOG_TYPE = "can"
 
-BUS_TYPE = "socketcan_native"
+BUS_TYPE = "socketcan"
 
 CAN_MASK = 0x7FF
 
