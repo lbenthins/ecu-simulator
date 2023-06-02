@@ -1,3 +1,5 @@
+# :warning: This project is not maintained anymore :(  It is kept here only for reference. Thanks for the feedbacks :)
+
 # ECU Simulator
 
 This Python tool simulates some vehicle diagnostic services. It can be used to test OBD-II dongles or tester tools that support the UDS (ISO 14229) and ISO-TP (ISO 15765-2) protocols. 
@@ -120,11 +122,7 @@ To test the UDS services, the [Caring Caribou](https://github.com/CaringCaribou/
 
 <img src="https://github.com/lbenthins/ecu-simulator/blob/master/img/caringcaribou_1.png" alt="UDS test env" width="496" height="160" />
 
-<img src="https://github.com/lbenthins/ecu-simulator/blob/master/img/caringcaribou_2.png" alt="UDS test env" width="496" height="160" />
-
-## Contact
-
-lbenthins@gmail.com 
+<img src="https://github.com/lbenthins/ecu-simulator/blob/master/img/caringcaribou_2.png" alt="UDS test env" width="496" height="160" /> 
 
 ## License 
 
